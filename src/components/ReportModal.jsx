@@ -1,200 +1,182 @@
-import React from 'react';
-import { X, Printer, Shield, Check, Lock } from 'lucide-react';
-import { QRCodeSVG } from 'qrcode.react';
+﻿import React, { useState } from 'react';
+import { 
+  X, 
+  Flag, 
+  Upload, 
+  MapPin, 
+  AlertTriangle, 
+  CheckCircle2, 
+  ShieldAlert,
+  Send
+} from 'lucide-react';
 
-export default function ReportModal({ isOpen, onClose, batch }) {
-  if (!isOpen || !batch) return null;
+export default function ReportModal({ isOpen, onClose, defaultBatch }) {
+  const [reporterType, setReporterType] = useState('Patient / Consumer');
+  const [productName, setProductName] = useState(defaultBatch?.name || '');
+  const [serialOrBatch, setSerialOrBatch] = useState(defaultBatch?.serialNumber || defaultBatch?.batchNumber || '');
+  const [pharmacyName, setPharmacyName] = useState(defaultBatch?.currentLocation || '');
+  const [complaintType, setComplaintType] = useState('Packaging Tampering / Clone Hologram');
+  const [description, setDescription] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-  const isAuthentic = batch.status === 'AUTHENTIC';
+  if (!isOpen) return null;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        onClose();
+      }, 2200);
+    }, 800);
+  };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm overflow-y-auto">
-      <div className="relative w-full max-w-3xl bg-white text-zinc-900 rounded-xl shadow-2xl overflow-hidden my-8 border border-zinc-200">
-        
-        {/* Controls bar (hidden during print) */}
-        <div className="no-print flex items-center justify-between px-6 py-3.5 bg-zinc-50 border-b border-zinc-200">
-          <span className="text-xs font-semibold text-zinc-600 uppercase tracking-wider font-mono">
-            Verification Report • {batch.serialNumber}
-          </span>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => window.print()}
-              className="px-3 py-1.5 rounded-md bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-xs flex items-center gap-1.5 transition-colors"
-            >
-              <Printer className="w-3.5 h-3.5" />
-              <span>Print / Save PDF</span>
-            </button>
-            <button
-              onClick={onClose}
-              className="p-1 rounded-md text-zinc-500 hover:text-zinc-800 transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-        {/* Official Printable Report Document */}
-        <div className="p-8 sm:p-12 space-y-8 bg-white">
-          
-          {/* Document Header */}
-          <div className="border-b border-zinc-300 pb-6 flex items-start justify-between gap-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+      <div className="relative w-full max-w-xl bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/90">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+              <Flag className="w-4 h-4" />
+            </div>
             <div>
-              <div className="flex items-center gap-2 text-zinc-800 font-mono text-xs uppercase tracking-widest font-semibold">
-                <Shield className="w-4 h-4 text-zinc-800" />
-                MediTrace Global Registry
-              </div>
-              <h1 className="text-2xl font-serif font-bold text-zinc-900 mt-1">
-                Certificate of Pharmaceutical Analysis & Provenance
-              </h1>
-              <p className="text-xs text-zinc-500 mt-0.5">
-                Issued in accordance with DSCSA Track & Trace Protocol standards
+              <h3 className="text-base font-bold text-white">
+                Report Discrepancy or Suspect Product
+              </h3>
+              <p className="text-[11px] text-slate-400">
+                Direct confidential alert to national regulatory surveillance
               </p>
             </div>
-
-            <div className="text-right text-xs font-mono text-zinc-600">
-              <div>Date: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</div>
-              <div className="font-semibold text-zinc-900 mt-0.5">Doc ID: {batch.id}</div>
-            </div>
           </div>
-
-          {/* Verification Status Banner */}
-          <div className={`p-4 rounded-lg border flex items-center justify-between gap-4 ${
-            isAuthentic 
-              ? 'bg-emerald-50/50 border-emerald-300 text-emerald-950'
-              : 'bg-rose-50/50 border-rose-300 text-rose-950'
-          }`}>
-            <div>
-              <div className="text-[11px] font-mono uppercase tracking-wider font-semibold opacity-75">
-                Authentication Status
-              </div>
-              <div className="text-lg font-bold font-serif mt-0.5">
-                {isAuthentic ? 'Verified Authentic • Supply Chain Intact' : batch.status.replace(/_/g, ' ')}
-              </div>
-            </div>
-
-            <div className="text-right">
-              <span className="text-[11px] font-mono uppercase opacity-75 block">Score</span>
-              <span className="text-xl font-mono font-bold">{batch.authenticityScore}%</span>
-            </div>
-          </div>
-
-          {/* Product Monograph */}
-          <div>
-            <h2 className="text-xs font-mono uppercase tracking-wider text-zinc-500 font-semibold border-b border-zinc-200 pb-1 mb-3">
-              1. Pharmaceutical Monograph
-            </h2>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-3 gap-x-6 text-xs">
-              <div>
-                <span className="text-zinc-500 block">Product Trade Name</span>
-                <span className="font-semibold text-zinc-900 text-sm mt-0.5 block">{batch.name}</span>
-              </div>
-              <div>
-                <span className="text-zinc-500 block">Active Dosage Form</span>
-                <span className="font-medium text-zinc-900 mt-0.5 block">{batch.dosage}</span>
-              </div>
-              <div>
-                <span className="text-zinc-500 block">Manufacturer</span>
-                <span className="font-medium text-zinc-900 mt-0.5 block">{batch.brand}</span>
-              </div>
-              <div>
-                <span className="text-zinc-500 block">Batch / Lot Number</span>
-                <span className="font-mono font-semibold text-zinc-900 mt-0.5 block">{batch.batchNumber}</span>
-              </div>
-              <div>
-                <span className="text-zinc-500 block">GS1 Serial Key</span>
-                <span className="font-mono font-semibold text-emerald-800 mt-0.5 block">{batch.serialNumber}</span>
-              </div>
-              <div>
-                <span className="text-zinc-500 block">National Drug Code (NDC)</span>
-                <span className="font-mono text-zinc-900 mt-0.5 block">{batch.ndc}</span>
-              </div>
-              <div>
-                <span className="text-zinc-500 block">Manufacturing Date</span>
-                <span className="text-zinc-900 mt-0.5 block">{batch.manufactureDate}</span>
-              </div>
-              <div>
-                <span className="text-zinc-500 block">Expiration Date</span>
-                <span className="text-zinc-900 mt-0.5 block">{batch.expiryDate}</span>
-              </div>
-              <div>
-                <span className="text-zinc-500 block">Permissible Storage</span>
-                <span className="text-zinc-900 mt-0.5 block">{batch.storageTemp}</span>
-              </div>
-            </div>
-
-            <div className="mt-3 p-3 bg-zinc-50 rounded border border-zinc-200 text-xs">
-              <span className="text-zinc-500 font-semibold">Active Formulation: </span>
-              <span className="text-zinc-800">{batch.composition}</span>
-            </div>
-          </div>
-
-          {/* Custody Audit Trail */}
-          <div>
-            <h2 className="text-xs font-mono uppercase tracking-wider text-zinc-500 font-semibold border-b border-zinc-200 pb-1 mb-3">
-              2. Custody Audit Trail
-            </h2>
-
-            <div className="space-y-2 text-xs">
-              {batch.journey.map((step, idx) => (
-                <div key={idx} className="flex items-start justify-between py-1.5 border-b border-dashed border-zinc-200">
-                  <div>
-                    <span className="font-semibold text-zinc-900">{step.stage}</span>
-                    <span className="text-zinc-500 ml-2">{step.facility} ({step.location})</span>
-                    <p className="text-zinc-600 text-[11px] mt-0.5">{step.details}</p>
-                  </div>
-                  <span className="font-mono text-zinc-500 text-[11px] shrink-0 ml-4">{step.timestamp}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Cryptographic Ledger Proof & QR */}
-          <div className="p-4 bg-zinc-50 rounded-lg border border-zinc-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="space-y-1.5 text-xs">
-              <div className="font-semibold text-zinc-800 flex items-center gap-1.5">
-                <Lock className="w-3.5 h-3.5 text-zinc-600" />
-                Cryptographic Ledger Anchor
-              </div>
-              <div className="font-mono text-[11px] text-zinc-600">
-                Block #{batch.cryptoProof?.blockNumber || 819245} • Smart Contract: {batch.cryptoProof?.smartContract}
-              </div>
-              <div className="font-mono text-[11px] text-zinc-500 break-all">
-                Hash: {batch.cryptoProof?.txHash}
-              </div>
-            </div>
-
-            <div className="shrink-0 flex flex-col items-center">
-              <QRCodeSVG
-                value={`https://meditrace.health/verify?sn=${batch.serialNumber}`}
-                size={88}
-                level="M"
-              />
-              <span className="text-[9px] font-mono text-zinc-500 mt-1">Scan to Verify</span>
-            </div>
-          </div>
-
-          {/* Signatures */}
-          <div className="pt-6 border-t border-zinc-300 grid grid-cols-2 gap-8 text-xs">
-            <div>
-              <div className="border-b border-zinc-400 pb-1 font-serif italic text-zinc-800">
-                Dr. Elena Vance, PharmD
-              </div>
-              <div className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold mt-1">
-                Serialization & Quality Release
-              </div>
-            </div>
-            <div>
-              <div className="border-b border-zinc-400 pb-1 font-serif italic text-zinc-800">
-                Sarah Lin, Supervising Pharmacist
-              </div>
-              <div className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold mt-1">
-                Dispensary Intake Auditor
-              </div>
-            </div>
-          </div>
-
+          <button
+            onClick={onClose}
+            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
+
+        {submitted ? (
+          <div className="p-8 text-center space-y-3">
+            <div className="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center mx-auto border border-blue-500/30">
+              <CheckCircle2 className="w-6 h-6" />
+            </div>
+            <h4 className="text-base font-bold text-white">Report Successfully Registered</h4>
+            <p className="text-xs text-slate-400 max-w-md mx-auto">
+              Surveillance tracking ticket issued. Health regulatory nodes have scheduled verification of the dispensary batch.
+            </p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-slate-300 font-medium mb-1">Reporter Category</label>
+                <select
+                  value={reporterType}
+                  onChange={(e) => setReporterType(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white outline-none focus:ring-1 focus:ring-blue-500"
+                >
+                  <option>Patient / Consumer</option>
+                  <option>Licensed Pharmacist</option>
+                  <option>Distributor / Logistics Agent</option>
+                  <option>Hospital Staff</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-slate-300 font-medium mb-1">Discrepancy Category</label>
+                <select
+                  value={complaintType}
+                  onChange={(e) => setComplaintType(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white outline-none focus:ring-1 focus:ring-blue-500"
+                >
+                  <option>Packaging Tampering / Clone Hologram</option>
+                  <option>Barcode Scan Collision / Failure</option>
+                  <option>Abnormal Tablet Color / Texture</option>
+                  <option>Suspicious Pharmacy Source</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-slate-300 font-medium mb-1">Medication Name</label>
+                <input
+                  type="text"
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
+                  required
+                  placeholder="e.g. Lipitor 20mg"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white outline-none focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-300 font-medium mb-1">Serial or Batch #</label>
+                <input
+                  type="text"
+                  value={serialOrBatch}
+                  onChange={(e) => setSerialOrBatch(e.target.value)}
+                  required
+                  placeholder="e.g. SN-2024-9921-X7Q"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white font-mono outline-none focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-slate-300 font-medium mb-1">Purchasing Pharmacy / Facility</label>
+              <input
+                type="text"
+                value={pharmacyName}
+                onChange={(e) => setPharmacyName(e.target.value)}
+                placeholder="e.g. Midtown Pharmacy, NY"
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white outline-none focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-slate-300 font-medium mb-1">Discrepancy Details</label>
+              <textarea
+                rows="3"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Describe observations regarding packaging condition, serial number print, or seal status..."
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white outline-none focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+
+            <div className="pt-2 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 rounded-xl text-slate-400 hover:text-white font-medium transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="px-5 py-2 rounded-xl bg-purple-700 hover:bg-purple-600 disabled:opacity-50 text-white font-semibold flex items-center gap-1.5 transition-colors shadow-xs"
+              >
+                {isSubmitting ? (
+                  <span>Submitting Alert...</span>
+                ) : (
+                  <>
+                    <Send className="w-3.5 h-3.5" />
+                    <span>Submit Investigation Alert</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );

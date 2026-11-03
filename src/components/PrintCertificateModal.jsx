@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { X, Printer, ShieldCheck, CheckCircle2, Download, Award, FileText, Lock } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 
@@ -13,13 +13,13 @@ export default function PrintCertificateModal({ isOpen, onClose, batch }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto print:p-0 print:bg-white print:static">
-      <div className="relative w-full max-w-4xl bg-white text-slate-900 rounded-3xl shadow-2xl overflow-hidden my-8 print:my-0 print:shadow-none print:w-full print:max-w-none print:rounded-none">
+      <div className="relative w-full max-w-4xl bg-white text-slate-900 rounded-2xl shadow-xl overflow-hidden my-8 print:my-0 print:shadow-none print:w-full print:max-w-none print:rounded-none">
         
-        {/* Screen Controls Header (hidden during printing) */}
-        <div className="flex items-center justify-between px-6 py-4 bg-slate-900 text-white border-b border-slate-800 print:hidden">
+        {/* Screen Controls Header */}
+        <div className="flex items-center justify-between px-6 py-3.5 bg-slate-900 text-white border-b border-slate-800 print:hidden">
           <div className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-emerald-400" />
-            <h3 className="font-bold text-sm">
+            <FileText className="w-4 h-4 text-blue-400" />
+            <h3 className="font-semibold text-xs tracking-wide">
               Official Certificate of Pharmaceutical Verification
             </h3>
           </div>
@@ -27,16 +27,16 @@ export default function PrintCertificateModal({ isOpen, onClose, batch }) {
           <div className="flex items-center gap-3">
             <button
               onClick={handlePrint}
-              className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-2 shadow-md shadow-emerald-500/20 transition-all"
+              className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center gap-2 shadow-xs transition-all"
             >
-              <Printer className="w-4 h-4" />
-              <span>Print / Save as PDF</span>
+              <Printer className="w-3.5 h-3.5" />
+              <span>Print / Save PDF</span>
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -45,7 +45,7 @@ export default function PrintCertificateModal({ isOpen, onClose, batch }) {
         <div id="printable-certificate" className="p-8 sm:p-12 bg-white text-slate-900 relative">
           
           {/* Decorative Border Frame */}
-          <div className="border-4 border-double border-slate-300 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+          <div className="border-2 border-slate-300 rounded-xl p-6 sm:p-8 relative overflow-hidden">
             
             {/* Watermark in background */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] select-none">
@@ -55,187 +55,122 @@ export default function PrintCertificateModal({ isOpen, onClose, batch }) {
             </div>
 
             {/* Certificate Header */}
-            <div className="text-center pb-6 border-b-2 border-slate-200 relative">
+            <div className="text-center pb-6 border-b border-slate-200 relative">
               <div className="flex justify-center mb-3">
-                <div className="w-14 h-14 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md">
-                  <ShieldCheck className="w-9 h-9" />
+                <div className="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-xs">
+                  <ShieldCheck className="w-7 h-7" />
                 </div>
               </div>
 
-              <div className="text-xs font-mono tracking-widest uppercase text-emerald-700 font-bold">
+              <div className="text-[11px] font-mono tracking-widest uppercase text-blue-700 font-bold">
                 MEDITRACE GLOBAL HEALTH VERIFICATION NETWORK
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 mt-1 uppercase font-serif">
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mt-1 uppercase">
                 Certificate of Pharmaceutical Authenticity & Provenance
               </h1>
-              <p className="text-xs text-slate-500 max-w-xl mx-auto mt-1">
-                Issued under the Decentralized Drug Supply Chain Security Protocol (DSCSA & WHO-Vigilance Compliant)
+              <p className="text-xs text-slate-500 mt-1">
+                Cryptographically Signed & Validated Across Decentralized Regulatory Oracles
               </p>
-
-              <div className="mt-3 inline-flex items-center gap-3 text-xs font-mono bg-slate-100 px-4 py-1.5 rounded-full border border-slate-300 text-slate-700">
-                <span>CERTIFICATE ID: <strong>CERT-{batch.id}-{batch.serialNumber.replace(/[^a-zA-Z0-9]/g, '').slice(-6)}</strong></span>
-                <span>•</span>
-                <span>DATE: <strong>{new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</strong></span>
-              </div>
             </div>
 
-            {/* Status Stamp & Score */}
-            <div className="my-6 p-4 rounded-xl border flex flex-wrap items-center justify-between gap-4 bg-emerald-50/60 border-emerald-200">
-              <div className="flex items-center gap-3">
-                <Award className="w-8 h-8 text-emerald-600" />
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-wider text-emerald-800">
-                    Verification Outcome
-                  </div>
-                  <div className="text-lg font-black text-emerald-900">
-                    {isAuthentic ? 'VERIFIED AUTHENTIC — ZERO TAMPER DETECTED' : batch.status.replace(/_/g, ' ')}
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-right">
-                <div className="text-xs font-mono uppercase text-slate-500">Authenticity Confidence</div>
-                <div className="text-2xl font-black font-mono text-emerald-700">{batch.authenticityScore}%</div>
-              </div>
-            </div>
-
-            {/* Medicine Monograph Grid */}
-            <div className="my-6">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600 mb-3 border-b pb-1">
-                Pharmaceutical Product Monograph
-              </h3>
-
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
-                <div>
-                  <span className="text-slate-500 block">Product Trade Name:</span>
-                  <span className="font-bold text-slate-900 text-sm block mt-0.5">{batch.name}</span>
-                </div>
-
-                <div>
-                  <span className="text-slate-500 block">Active Formulation / Dosage:</span>
-                  <span className="font-semibold text-slate-900 block mt-0.5">{batch.dosage}</span>
-                </div>
-
-                <div>
-                  <span className="text-slate-500 block">Manufacturer Licensee:</span>
-                  <span className="font-semibold text-slate-900 block mt-0.5">{batch.brand}</span>
-                </div>
-
-                <div>
-                  <span className="text-slate-500 block">Production Batch Code:</span>
-                  <span className="font-mono font-bold text-slate-900 block mt-0.5">{batch.batchNumber}</span>
-                </div>
-
-                <div>
-                  <span className="text-slate-500 block">Unique Serial Key (GS1):</span>
-                  <span className="font-mono font-bold text-emerald-700 block mt-0.5">{batch.serialNumber}</span>
-                </div>
-
-                <div>
-                  <span className="text-slate-500 block">National Drug Code (NDC):</span>
-                  <span className="font-mono font-semibold text-slate-900 block mt-0.5">{batch.ndc}</span>
-                </div>
-
-                <div>
-                  <span className="text-slate-500 block">Manufacturing Date:</span>
-                  <span className="font-semibold text-slate-900 block mt-0.5">{batch.manufactureDate}</span>
-                </div>
-
-                <div>
-                  <span className="text-slate-500 block">Expiration Date:</span>
-                  <span className="font-semibold text-slate-900 block mt-0.5">{batch.expiryDate}</span>
-                </div>
-
-                <div>
-                  <span className="text-slate-500 block">Storage Temperature Spec:</span>
-                  <span className="font-semibold text-slate-900 block mt-0.5">{batch.storageTemp}</span>
-                </div>
-              </div>
-
-              <div className="mt-4 p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs">
-                <span className="text-slate-500 font-semibold">Active Composition: </span>
-                <span className="text-slate-800">{batch.composition}</span>
-              </div>
-            </div>
-
-            {/* Blockchain Proof & Scannable QR */}
-            <div className="my-6 grid grid-cols-1 sm:grid-cols-3 gap-6 items-center p-4 bg-slate-50 rounded-xl border border-slate-200">
-              <div className="sm:col-span-2 space-y-2 text-xs">
-                <div className="font-bold text-slate-800 flex items-center gap-1.5">
-                  <Lock className="w-4 h-4 text-emerald-600" />
-                  Immutable Cryptographic Ledger Endorsement
-                </div>
-                <div>
-                  <span className="text-slate-500 font-mono text-[10px] block">BLOCKCHAIN BLOCK NUMBER:</span>
-                  <span className="font-mono font-bold text-slate-900">Block #{batch.cryptoProof?.blockNumber || 819245}</span>
-                </div>
-                <div>
-                  <span className="text-slate-500 font-mono text-[10px] block">TRANSACTION HASH:</span>
-                  <span className="font-mono text-slate-800 text-[11px] break-all">{batch.cryptoProof?.txHash}</span>
-                </div>
-                <div>
-                  <span className="text-slate-500 font-mono text-[10px] block">SMART CONTRACT ADDRESS:</span>
-                  <span className="font-mono text-slate-800 text-[11px] break-all">{batch.cryptoProof?.smartContract}</span>
-                </div>
-              </div>
-
-              {/* QR Verification Seal */}
-              <div className="flex flex-col items-center justify-center p-3 bg-white rounded-xl border border-slate-200 shadow-sm">
-                <QRCodeSVG
-                  value={`https://meditrace.health/verify?id=${batch.id}&sn=${batch.serialNumber}`}
-                  size={110}
-                  level="H"
-                />
-                <span className="text-[9px] font-mono font-bold text-slate-600 mt-1">SCAN TO AUDIT</span>
-              </div>
-            </div>
-
-            {/* Custody Journey Summary */}
-            <div className="my-6">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2 border-b pb-1">
-                Audited Custody Milestones
-              </h3>
-              <div className="space-y-1.5 text-xs">
-                {batch.journey.map((step, idx) => (
-                  <div key={idx} className="flex items-center justify-between py-1 border-b border-dashed border-slate-200">
-                    <span className="font-semibold text-slate-800">
-                      {idx + 1}. {step.stage}: {step.facility} ({step.location})
-                    </span>
-                    <span className="font-mono text-slate-500 text-[11px]">{step.timestamp}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Signature & Seal Sign-Off */}
-            <div className="mt-8 pt-6 border-t-2 border-slate-200 grid grid-cols-2 sm:grid-cols-3 gap-6 items-end text-xs">
+            {/* Certificate Content Grid */}
+            <div className="py-6 space-y-6">
+              
+              {/* Product Profile */}
               <div>
-                <div className="border-b border-slate-400 pb-1 font-serif text-slate-800 italic">
-                  Dr. Elena Vance, PharmD
+                <div className="text-[10px] font-mono uppercase text-slate-400 font-semibold tracking-wider mb-2">
+                  1. Product Monograph & Batch Data
                 </div>
-                <div className="text-[10px] text-slate-500 mt-1 uppercase font-semibold">
-                  Lead Serialization Officer
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs">
+                  <div>
+                    <span className="text-slate-500 block text-[10px]">Product Commercial Name</span>
+                    <strong className="text-slate-900 font-bold">{batch.name}</strong>
+                  </div>
+                  <div>
+                    <span className="text-slate-500 block text-[10px]">Dosage & Formulation</span>
+                    <strong className="text-slate-800">{batch.dosage}</strong>
+                  </div>
+                  <div>
+                    <span className="text-slate-500 block text-[10px]">Licensed Manufacturer</span>
+                    <strong className="text-slate-800">{batch.brand}</strong>
+                  </div>
+                  <div>
+                    <span className="text-slate-500 block text-[10px]">Batch / Lot Identifier</span>
+                    <strong className="font-mono text-slate-900">{batch.batchNumber}</strong>
+                  </div>
+                  <div>
+                    <span className="text-slate-500 block text-[10px]">Unique Serial Number</span>
+                    <strong className="font-mono text-blue-700">{batch.serialNumber}</strong>
+                  </div>
+                  <div>
+                    <span className="text-slate-500 block text-[10px]">National Drug Code (NDC)</span>
+                    <strong className="font-mono text-slate-800">{batch.ndc}</strong>
+                  </div>
                 </div>
               </div>
 
-              <div>
-                <div className="border-b border-slate-400 pb-1 font-serif text-slate-800 italic">
-                  Sarah Lin, Supervising Pharmacist
+              {/* Regulatory Dates & Cold Chain Specs */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                <div className="p-3 border border-slate-200 rounded-xl">
+                  <span className="text-slate-400 text-[10px] block">Manufacture Date</span>
+                  <strong className="text-slate-800">{batch.manufactureDate}</strong>
                 </div>
-                <div className="text-[10px] text-slate-500 mt-1 uppercase font-semibold">
-                  Dispensary Intake Auditor
+                <div className="p-3 border border-slate-200 rounded-xl">
+                  <span className="text-slate-400 text-[10px] block">Expiration Date</span>
+                  <strong className="text-slate-800">{batch.expiryDate}</strong>
+                </div>
+                <div className="p-3 border border-slate-200 rounded-xl">
+                  <span className="text-slate-400 text-[10px] block">Storage Specification</span>
+                  <strong className="text-slate-800">{batch.storageTemp}</strong>
+                </div>
+                <div className="p-3 border border-slate-200 rounded-xl">
+                  <span className="text-slate-400 text-[10px] block">Current Verified Score</span>
+                  <strong className="text-blue-700 font-mono font-bold">{batch.authenticityScore}%</strong>
                 </div>
               </div>
 
-              <div className="text-right">
-                <div className="inline-block p-2 border-2 border-emerald-600 rounded-lg text-emerald-700 font-mono font-bold text-[10px] uppercase text-center">
-                  Official Cryptographic Seal
-                  <br />
-                  MEDITRACE AUTHENTICATED
+              {/* Verification QR and Blockchain Proof */}
+              <div className="border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-6 bg-slate-50/50">
+                <div className="space-y-1.5 text-xs">
+                  <div className="text-[10px] font-mono uppercase text-slate-400 font-semibold tracking-wider">
+                    Cryptographic Ledger Attestation
+                  </div>
+                  <div className="font-mono text-[11px] text-slate-700">
+                    <div>Smart Contract: <span className="text-blue-700 font-semibold">{batch.cryptoProof?.smartContract}</span></div>
+                    <div>Block Recorded: <span className="text-slate-900 font-semibold">#{batch.cryptoProof?.blockNumber}</span></div>
+                    <div>Digital Signature: <span className="text-slate-600">{batch.cryptoProof?.digitalSignature}</span></div>
+                    <div>Consensus Quorum: <span className="text-blue-700 font-semibold">{batch.cryptoProof?.consensus}</span></div>
+                  </div>
+                </div>
+
+                <div className="flex-shrink-0 flex flex-col items-center p-3 bg-white border border-slate-200 rounded-xl">
+                  <QRCodeSVG
+                    value={`https://meditrace.health/verify?id=${batch.id}&sn=${batch.serialNumber}`}
+                    size={90}
+                    level="H"
+                  />
+                  <span className="text-[9px] font-mono text-slate-500 mt-1">Scan for Live Status</span>
                 </div>
               </div>
+
+              {/* Signatures & Seal */}
+              <div className="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-500">
+                <div className="space-y-1">
+                  <div className="font-serif italic text-sm text-slate-800">
+                    {batch.journey?.[0]?.authorizedBy || 'Authorized Lead Serialization Pharmacist'}
+                  </div>
+                  <div className="text-[10px] text-slate-400">
+                    Lead Quality & Serialization Director • MediTrace Registered Node
+                  </div>
+                </div>
+
+                <div className="text-right text-[10px] font-mono space-y-0.5">
+                  <div>Certificate Ref: CERT-{batch.batchNumber}-{Date.now().toString().slice(-6)}</div>
+                  <div>Issued: {new Date().toLocaleDateString()} UTC</div>
+                </div>
+              </div>
+
             </div>
-
           </div>
         </div>
 

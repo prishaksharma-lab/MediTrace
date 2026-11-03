@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { 
   Building2, 
   FlaskConical, 
@@ -42,36 +42,36 @@ export default function ProvenanceTimeline({ journey, batchStatus, theme }) {
   };
 
   return (
-    <div className={`border rounded-2xl p-6 shadow-xl space-y-6 transition-colors duration-200 ${
-      isLight ? 'bg-white border-slate-200' : 'bg-slate-900 border-slate-800'
+    <div className={`border rounded-2xl p-6 shadow-xs space-y-5 transition-colors duration-200 ${
+      isLight ? 'bg-white border-slate-200/80' : 'bg-slate-900/90 border-slate-800/80'
     }`}>
       {/* Title & Stats */}
       <div className={`flex flex-wrap items-center justify-between gap-3 border-b pb-4 ${
-        isLight ? 'border-slate-200' : 'border-slate-800'
+        isLight ? 'border-slate-200/80' : 'border-slate-800/80'
       }`}>
         <div>
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <LinkIcon className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-            Cryptographic Custody Journey & Blockchain Events
+          <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <LinkIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+            Chain of Custody & Decentralized Milestones
           </h3>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-            End-to-end immutable trail recorded across decentralized verification nodes
+            Immutable custody trail recorded across decentralized verification nodes
           </p>
         </div>
         <div className="flex items-center gap-2 text-xs">
-          <span className={`px-2.5 py-1 rounded-full font-mono border ${
+          <span className={`px-2.5 py-1 rounded-full font-mono text-[11px] border ${
             isLight ? 'bg-slate-100 text-slate-700 border-slate-300' : 'bg-slate-800 text-slate-300 border-slate-700'
           }`}>
             {journey.length} Checkpoints Logged
           </span>
-          <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-mono border border-emerald-500/20 font-semibold">
+          <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-700 dark:text-blue-300 font-mono text-[11px] border border-blue-500/20 font-semibold">
             100% Cryptographically Signed
           </span>
         </div>
       </div>
 
       {/* Timeline Steps */}
-      <div className="relative pl-6 sm:pl-8 space-y-8 before:absolute before:left-3 sm:before:left-4 before:top-3 before:bottom-3 before:w-0.5 before:bg-gradient-to-b before:from-emerald-500 before:via-teal-500 before:to-slate-400 dark:before:to-slate-700">
+      <div className="relative pl-6 sm:pl-8 space-y-6 before:absolute before:left-3 sm:before:left-4 before:top-3 before:bottom-3 before:w-0.5 before:bg-gradient-to-b before:from-blue-600 before:via-indigo-500 before:to-slate-300 dark:before:to-slate-700">
         {journey.map((step, index) => {
           const Icon = getStageIcon(step.stage);
           const isExpanded = expandedId === step.id;
@@ -81,114 +81,105 @@ export default function ProvenanceTimeline({ journey, batchStatus, theme }) {
           return (
             <div key={step.id} className="relative group">
               {/* Node Dot / Icon */}
-              <div className={`absolute -left-6 sm:-left-8 top-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border-2 shadow-lg transition-transform duration-200 group-hover:scale-110 ${
+              <div className={`absolute -left-6 sm:-left-8 top-1.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center border shadow-xs transition-transform duration-200 group-hover:scale-105 ${
                 isFailed 
-                  ? 'bg-rose-100 dark:bg-rose-950 border-rose-500 text-rose-600 dark:text-rose-400' 
+                  ? 'bg-purple-100 dark:bg-purple-950 border-purple-500 text-purple-700 dark:text-purple-300' 
                   : isRecalled
-                  ? 'bg-amber-100 dark:bg-amber-950 border-amber-500 text-amber-600 dark:text-amber-400'
+                  ? 'bg-amber-100 dark:bg-amber-950 border-amber-500 text-amber-700 dark:text-amber-300'
                   : isLight
-                  ? 'bg-emerald-50 border-emerald-600 text-emerald-700 shadow-emerald-500/10'
-                  : 'bg-slate-900 border-emerald-500 text-emerald-400 shadow-emerald-900/40'
+                  ? 'bg-blue-50 border-blue-600 text-blue-700 shadow-blue-500/10'
+                  : 'bg-slate-900 border-blue-500 text-blue-400'
               }`}>
-                <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <Icon className="w-3.5 h-3.5" />
               </div>
 
-              {/* Step Card */}
+              {/* Event Card */}
               <div 
                 onClick={() => toggleExpand(step.id)}
-                className={`rounded-xl p-4 sm:p-5 border cursor-pointer transition-all duration-200 ${
-                  isFailed
-                    ? 'border-rose-400 dark:border-rose-500/40 bg-rose-50/50 dark:bg-slate-900/80 hover:border-rose-500'
-                    : isRecalled
-                    ? 'border-amber-400 dark:border-amber-500/40 bg-amber-50/50 dark:bg-slate-900/80 hover:border-amber-500'
-                    : isLight
-                    ? 'bg-slate-50 border-slate-200 hover:border-emerald-500/60 hover:bg-slate-100/70 shadow-sm'
-                    : 'bg-slate-950/80 border-slate-800 hover:border-emerald-500/50 hover:bg-slate-900/60'
+                className={`ml-3 rounded-xl border p-4 cursor-pointer transition-all ${
+                  isLight 
+                    ? isExpanded 
+                      ? 'bg-blue-50/40 border-blue-300 shadow-xs' 
+                      : 'bg-slate-50/70 hover:bg-slate-100/70 border-slate-200/80' 
+                    : isExpanded 
+                    ? 'bg-slate-800/80 border-blue-500/40 shadow-xs' 
+                    : 'bg-slate-950/60 hover:bg-slate-900/60 border-slate-800/80'
                 }`}
               >
-                {/* Header row */}
-                <div className="flex flex-wrap items-start justify-between gap-2">
-                  <div>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
-                      <span className="text-[11px] font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold">
-                        Step {index + 1}: {step.stage}
+                      <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20 font-semibold">
+                        {step.stage}
                       </span>
-                      {isFailed ? (
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-700 dark:text-rose-400 border border-rose-500/30">
-                          ANOMALY FLAGGED
-                        </span>
-                      ) : isRecalled ? (
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-700 dark:text-amber-400 border border-amber-500/30">
-                          SMART RECALL
-                        </span>
-                      ) : (
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-                          <CheckCircle2 className="w-2.5 h-2.5" /> VERIFIED
-                        </span>
-                      )}
+                      <span className="text-xs text-slate-400 font-mono">
+                        {step.timestamp}
+                      </span>
                     </div>
-                    <h4 className="text-base font-bold text-slate-900 dark:text-white mt-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors">
+                    <h4 className="text-sm font-bold text-slate-900 dark:text-white mt-1">
                       {step.title}
                     </h4>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                      {step.facility} — <span className="text-slate-700 dark:text-slate-300">{step.location}</span>
-                    </p>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
-                      {step.timestamp}
+                    <span className={`text-[11px] font-mono px-2 py-0.5 rounded border ${
+                      isFailed 
+                        ? 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/20' 
+                        : isRecalled 
+                        ? 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/20' 
+                        : 'bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/20'
+                    }`}>
+                      {step.status}
                     </span>
-                    <button className="text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
-                      {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                    </button>
+                    {isExpanded ? (
+                      <ChevronUp className="w-4 h-4 text-slate-400" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 text-slate-400" />
+                    )}
                   </div>
                 </div>
 
-                {/* Always-visible short summary */}
-                <p className="text-xs text-slate-700 dark:text-slate-300 mt-2.5 leading-relaxed">
-                  {step.details}
-                </p>
+                {/* Always-visible Summary line */}
+                <div className="mt-2 text-xs text-slate-600 dark:text-slate-400 flex flex-wrap items-center gap-4">
+                  <span>Facility: <strong className="text-slate-800 dark:text-slate-200">{step.facility}</strong></span>
+                  <span>Location: <strong className="text-slate-800 dark:text-slate-200">{step.location}</strong></span>
+                </div>
 
-                {/* Collapsible Deep Verification Proofs */}
+                {/* Expanded Details */}
                 {isExpanded && (
-                  <div className={`mt-4 pt-4 border-t space-y-3 animate-fadeIn ${
-                    isLight ? 'border-slate-200' : 'border-slate-800/80'
+                  <div className={`mt-3 pt-3 border-t text-xs space-y-2.5 transition-all ${
+                    isLight ? 'border-slate-200' : 'border-slate-800'
                   }`}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                      <div className={`p-3 rounded-lg border ${
-                        isLight ? 'bg-white border-slate-200' : 'bg-slate-900 border-slate-800'
-                      }`}>
-                        <span className="text-slate-500 block text-[10px] uppercase font-mono">Authorized Official / Signer</span>
-                        <span className="font-semibold text-slate-800 dark:text-slate-200 mt-0.5 block">{step.authorizedBy}</span>
-                        <span className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 mt-0.5 block truncate">DID: {step.did}</span>
-                      </div>
+                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                      {step.details}
+                    </p>
 
-                      <div className={`p-3 rounded-lg border ${
-                        isLight ? 'bg-white border-slate-200' : 'bg-slate-900 border-slate-800'
-                      }`}>
-                        <span className="text-slate-500 block text-[10px] uppercase font-mono">Ledger Block Number</span>
-                        <span className="font-bold font-mono text-cyan-600 dark:text-cyan-400 mt-0.5 block">Block #{step.block}</span>
-                        <div className="flex items-center justify-between mt-1">
-                          <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 truncate">Tx: {step.txHash}</span>
-                          <button
-                            onClick={(e) => handleCopy(step.txHash, e)}
-                            className="p-1 rounded text-slate-400 hover:text-slate-800 dark:hover:text-white ml-2"
-                            title="Copy Transaction Hash"
-                          >
-                            {copiedHash === step.txHash ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-                          </button>
-                        </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                      <div>
+                        <span className="text-slate-400 font-medium block">Authorized Signer:</span>
+                        <span className="font-mono text-slate-700 dark:text-slate-300">{step.authorizedBy}</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 font-medium block">Decentralized ID (DID):</span>
+                        <span className="font-mono text-slate-700 dark:text-slate-300 truncate block" title={step.did}>{step.did}</span>
                       </div>
                     </div>
 
-                    <div className={`p-2.5 rounded-lg text-[11px] flex items-center justify-between ${
-                      isLight 
-                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' 
-                        : 'bg-emerald-950/20 border border-emerald-900/40 text-emerald-300'
-                    }`}>
-                      <span>✓ ECDSA signature verified against smart contract whitelist</span>
-                      <span className="font-mono text-[10px] text-emerald-600 dark:text-emerald-400">Gas: 21,040 Gwei</span>
+                    <div className="flex flex-wrap items-center justify-between gap-2 pt-1 font-mono text-[10px] text-slate-500">
+                      <div className="flex items-center gap-2">
+                        <span>TX: {step.txHash}</span>
+                        <button
+                          onClick={(e) => handleCopy(step.txHash, e)}
+                          className="hover:text-blue-500 transition-colors"
+                        >
+                          {copiedHash === step.txHash ? (
+                            <Check className="w-3 h-3 text-blue-500" />
+                          ) : (
+                            <Copy className="w-3 h-3" />
+                          )}
+                        </button>
+                      </div>
+                      <span>Block #{step.block}</span>
                     </div>
                   </div>
                 )}

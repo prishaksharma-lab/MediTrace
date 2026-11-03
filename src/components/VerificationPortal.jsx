@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { 
   ShieldCheck, 
@@ -38,15 +38,15 @@ export default function VerificationPortal({
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
   const isLight = theme === 'light';
 
-  // Trigger celebration confetti on authentic scan
+  // Trigger celebration confetti on authentic scan with refined sapphire & cyan palette
   useEffect(() => {
     if (selectedBatch && selectedBatch.status === 'AUTHENTIC') {
       try {
         confetti({
-          particleCount: 80,
-          spread: 70,
+          particleCount: 50,
+          spread: 60,
           origin: { y: 0.6 },
-          colors: ['#10b981', '#06b6d4', '#3b82f6', '#34d399']
+          colors: ['#2563eb', '#06b6d4', '#6366f1', '#38bdf8']
         });
       } catch (err) {
         // Fallback gracefully
@@ -72,87 +72,87 @@ export default function VerificationPortal({
   const isColdBreach = selectedBatch?.status === 'COLD_CHAIN_BREACH';
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div className="space-y-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
       
       {/* Top Search & Presets Hero */}
-      <div className={`border rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden transition-colors duration-200 ${
+      <div className={`border rounded-2xl p-5 sm:p-7 shadow-xs relative overflow-hidden transition-colors duration-200 ${
         isLight
-          ? 'bg-gradient-to-b from-white via-slate-50 to-emerald-50/20 border-slate-200'
-          : 'bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border-slate-800'
+          ? 'bg-gradient-to-br from-white via-slate-50 to-blue-50/30 border-slate-200/80'
+          : 'bg-gradient-to-br from-slate-900/90 via-slate-900 to-slate-950 border-slate-800/80'
       }`}>
-        <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
         <div className="relative z-10 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-semibold mb-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-medium mb-3">
             <Sparkles className="w-3.5 h-3.5" />
             Zero-Trust Pharmaceutical Traceability
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             Verify Medicine Authenticity & Supply Chain
           </h1>
-          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base mt-2">
-            Scan packaging QR or enter the unique serial number to inspect real-time blockchain registration, custody provenance, temperature integrity, and counterfeit alerts.
+          <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-2 leading-relaxed">
+            Scan packaging QR or enter serial numbers to inspect decentralized ledger verification, chain-of-custody provenance, and thermal safety records.
           </p>
 
           {/* Quick Scanner Action Bar */}
-          <div className="mt-6 flex flex-col sm:flex-row gap-3">
+          <div className="mt-5 flex flex-col sm:flex-row gap-2.5">
             <button
               onClick={onOpenScanner}
-              className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-sm flex items-center justify-center gap-2.5 shadow-xl shadow-emerald-500/25 transition-all duration-200 hover:scale-[1.02]"
+              className="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-sm transition-all duration-200 hover:scale-[1.01]"
             >
-              <QrCode className="w-5 h-5" />
+              <QrCode className="w-4 h-4" />
               <span>Launch Barcode / QR Scanner</span>
             </button>
 
             <button
               onClick={onOpenScanner}
-              className={`px-5 py-3.5 rounded-xl border font-semibold text-sm flex items-center justify-center gap-2 transition-colors ${
+              className={`px-4 py-3 rounded-xl border font-medium text-xs flex items-center justify-center gap-2 transition-colors ${
                 isLight
-                  ? 'bg-white hover:bg-slate-100 border-slate-300 text-slate-800 shadow-sm'
-                  : 'bg-slate-800/80 hover:bg-slate-800 border-slate-700 text-slate-200'
+                  ? 'bg-white hover:bg-slate-100 border-slate-300 text-slate-700 shadow-xs'
+                  : 'bg-slate-800/60 hover:bg-slate-800 border-slate-700 text-slate-200'
               }`}
             >
-              <Search className="w-4 h-4 text-slate-400" />
+              <Search className="w-3.5 h-3.5 text-slate-400" />
               <span>Enter Serial Number / NDC</span>
             </button>
           </div>
 
           {/* Quick-Preset scenario pills */}
-          <div className={`mt-6 pt-5 border-t ${isLight ? 'border-slate-200' : 'border-slate-800/70'}`}>
-            <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+          <div className={`mt-5 pt-4 border-t ${isLight ? 'border-slate-200/80' : 'border-slate-800/70'}`}>
+            <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
               Instant Demo Presets:
             </div>
             <div className="flex flex-wrap gap-2">
               {batches.map((batch) => {
                 const isSelected = selectedBatch?.id === batch.id;
                 let btnStyle = isLight 
-                  ? 'bg-white border-slate-200 text-slate-700 hover:border-slate-300 shadow-sm' 
+                  ? 'bg-white border-slate-200 text-slate-700 hover:border-slate-300 shadow-xs' 
                   : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700';
 
                 if (batch.status === 'AUTHENTIC') {
                   btnStyle = isSelected 
-                    ? 'bg-emerald-500/20 border-emerald-500 text-emerald-800 dark:text-emerald-300 font-bold' 
+                    ? 'bg-blue-500/15 border-blue-500/60 text-blue-700 dark:text-blue-300 font-semibold ring-1 ring-blue-500/30' 
                     : isLight
-                      ? 'bg-white border-emerald-200 text-emerald-800 hover:border-emerald-400'
-                      : 'bg-slate-900/80 border-slate-800 text-slate-300 hover:border-emerald-500/50';
+                      ? 'bg-white border-blue-200 text-blue-700 hover:border-blue-400'
+                      : 'bg-slate-900/80 border-slate-800 text-slate-300 hover:border-blue-500/40';
                 } else if (batch.status === 'SUSPICIOUS_DUPLICATE') {
                   btnStyle = isSelected 
-                    ? 'bg-rose-500/20 border-rose-500 text-rose-800 dark:text-rose-300 font-bold' 
+                    ? 'bg-purple-500/15 border-purple-500/60 text-purple-700 dark:text-purple-300 font-semibold ring-1 ring-purple-500/30' 
                     : isLight
-                      ? 'bg-white border-rose-200 text-rose-800 hover:border-rose-400'
-                      : 'bg-slate-900/80 border-slate-800 text-slate-300 hover:border-rose-500/50';
+                      ? 'bg-white border-purple-200 text-purple-700 hover:border-purple-400'
+                      : 'bg-slate-900/80 border-slate-800 text-slate-300 hover:border-purple-500/40';
                 } else if (batch.status === 'RECALLED') {
                   btnStyle = isSelected 
-                    ? 'bg-amber-500/20 border-amber-500 text-amber-800 dark:text-amber-300 font-bold' 
+                    ? 'bg-amber-500/15 border-amber-500/60 text-amber-700 dark:text-amber-300 font-semibold ring-1 ring-amber-500/30' 
                     : isLight
-                      ? 'bg-white border-amber-200 text-amber-800 hover:border-amber-400'
-                      : 'bg-slate-900/80 border-slate-800 text-slate-300 hover:border-amber-500/50';
+                      ? 'bg-white border-amber-200 text-amber-700 hover:border-amber-400'
+                      : 'bg-slate-900/80 border-slate-800 text-slate-300 hover:border-amber-500/40';
                 } else if (batch.status === 'COLD_CHAIN_BREACH') {
                   btnStyle = isSelected 
-                    ? 'bg-cyan-500/20 border-cyan-500 text-cyan-800 dark:text-cyan-300 font-bold' 
+                    ? 'bg-cyan-500/15 border-cyan-500/60 text-cyan-700 dark:text-cyan-300 font-semibold ring-1 ring-cyan-500/30' 
                     : isLight
-                      ? 'bg-white border-cyan-200 text-cyan-800 hover:border-cyan-400'
-                      : 'bg-slate-900/80 border-slate-800 text-slate-300 hover:border-cyan-500/50';
+                      ? 'bg-white border-cyan-200 text-cyan-700 hover:border-cyan-400'
+                      : 'bg-slate-900/80 border-slate-800 text-slate-300 hover:border-cyan-500/40';
                 }
 
                 return (
@@ -161,11 +161,8 @@ export default function VerificationPortal({
                     onClick={() => onSelectBatch(batch)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all flex items-center gap-1.5 ${btnStyle}`}
                   >
-                    <span>
-                      {batch.status === 'AUTHENTIC' ? '✅' : batch.status === 'SUSPICIOUS_DUPLICATE' ? '🚨' : batch.status === 'RECALLED' ? '⚠️' : '❄️'}
-                    </span>
-                    <span>{batch.name.split('(')[0]}</span>
-                    <span className="text-[10px] opacity-70 font-mono">({batch.status.replace(/_/g, ' ')})</span>
+                    <span>{batch.name.split('(')[0].trim()}</span>
+                    <span className="text-[10px] opacity-75 font-mono">({batch.status.replace(/_/g, ' ')})</span>
                   </button>
                 );
               })}
@@ -185,72 +182,72 @@ export default function VerificationPortal({
           
           {/* Left Column: Product Dossier & Verification Badge */}
           <div className="lg:col-span-2 space-y-6">
-            <div className={`border rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden transition-colors duration-200 ${
+            <div className={`border rounded-2xl p-6 sm:p-7 shadow-xs relative overflow-hidden transition-colors duration-200 ${
               isLight
                 ? isAuthentic 
-                  ? 'bg-white border-emerald-300 shadow-emerald-500/5'
+                  ? 'bg-white border-blue-200'
                   : isDuplicate
-                  ? 'bg-white border-rose-300 shadow-rose-500/5'
-                  : 'bg-white border-amber-300 shadow-amber-500/5'
+                  ? 'bg-white border-purple-200'
+                  : 'bg-white border-amber-200'
                 : isAuthentic
-                ? 'bg-slate-900 border-emerald-500/40 shadow-emerald-950/20'
+                ? 'bg-slate-900/90 border-blue-500/30'
                 : isDuplicate
-                ? 'bg-slate-900 border-rose-500/50 shadow-rose-950/30'
-                : 'bg-slate-900 border-amber-500/40 shadow-amber-950/20'
+                ? 'bg-slate-900/90 border-purple-500/30'
+                : 'bg-slate-900/90 border-amber-500/30'
             }`}>
               
               {/* Status Header Badge */}
-              <div className={`flex flex-wrap items-center justify-between gap-4 pb-6 border-b ${
-                isLight ? 'border-slate-200' : 'border-slate-800'
+              <div className={`flex flex-wrap items-center justify-between gap-4 pb-5 border-b ${
+                isLight ? 'border-slate-200/80' : 'border-slate-800/80'
               }`}>
                 <div className="flex items-center gap-3">
-                  <div className={`p-3 rounded-2xl border shadow-lg ${
+                  <div className={`p-2.5 rounded-xl border ${
                     isAuthentic
-                      ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400'
+                      ? 'bg-blue-500/10 border-blue-500/25 text-blue-600 dark:text-blue-400'
                       : isDuplicate
-                      ? 'bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-400 animate-pulse'
-                      : 'bg-amber-500/10 border-amber-500/30 text-amber-600 dark:text-amber-400'
+                      ? 'bg-purple-500/10 border-purple-500/25 text-purple-600 dark:text-purple-400'
+                      : 'bg-amber-500/10 border-amber-500/25 text-amber-600 dark:text-amber-400'
                   }`}>
                     {isAuthentic ? (
-                      <ShieldCheck className="w-8 h-8" />
+                      <ShieldCheck className="w-7 h-7" />
                     ) : isDuplicate ? (
-                      <ShieldAlert className="w-8 h-8" />
+                      <ShieldAlert className="w-7 h-7" />
                     ) : (
-                      <AlertTriangle className="w-8 h-8" />
+                      <AlertTriangle className="w-7 h-7" />
                     )}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className={`text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${
+                      <span className={`text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md border ${
                         isAuthentic
-                          ? 'bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border-emerald-500/40'
+                          ? 'bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/30'
                           : isDuplicate
-                          ? 'bg-rose-500/20 text-rose-800 dark:text-rose-300 border-rose-500/40'
-                          : 'bg-amber-500/20 text-amber-800 dark:text-amber-300 border-amber-500/40'
+                          ? 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/30'
+                          : 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30'
                       }`}>
                         {selectedBatch.status.replace(/_/g, ' ')}
                       </span>
-                      <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
-                        Scan Verified: {selectedBatch.verifiedAt}
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                        Verified: {selectedBatch.verifiedAt}
                       </span>
                     </div>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mt-1">
-                      {isAuthentic && 'Genuine Medicine • Authorized Supply Chain'}
-                      {isDuplicate && 'Counterfeit / Duplicate Serial Warning'}
-                      {isRecalled && 'Product Under Active Regulatory Recall'}
-                      {isColdBreach && 'Thermal Excursion Flagged'}
+                    <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mt-1">
+                      {isAuthentic && 'Verified Genuine • Authorized Supply Chain'}
+                      {isDuplicate && 'Discrepancy Detected — Duplicate Serial Collision'}
+                      {isRecalled && 'Product Under Active Regulatory Recall Notice'}
+                      {isColdBreach && 'Thermal Excursion Flagged — Requires Inspection'}
                     </h2>
                   </div>
                 </div>
 
                 {/* Authenticity Score Dial */}
                 <div className="text-right">
-                  <div className="text-[11px] font-mono uppercase text-slate-500 dark:text-slate-400">Authenticity Score</div>
-                  <div className={`text-3xl font-black font-mono ${
+                  <div className="text-[10px] font-mono uppercase text-slate-400">Authenticity Score</div>
+                  <div className={`text-2xl sm:text-3xl font-extrabold font-mono ${
                     isAuthentic 
-                      ? 'text-emerald-600 dark:text-emerald-400' 
+                      ? 'text-blue-600 dark:text-blue-400' 
                       : isDuplicate 
-                      ? 'text-rose-600 dark:text-rose-400' 
+                      ? 'text-purple-600 dark:text-purple-400' 
                       : 'text-amber-600 dark:text-amber-400'
                   }`}>
                     {selectedBatch.authenticityScore}%
@@ -260,55 +257,55 @@ export default function VerificationPortal({
               </div>
 
               {/* Medicine Core Details */}
-              <div className={`py-6 border-b space-y-4 ${isLight ? 'border-slate-200' : 'border-slate-800'}`}>
+              <div className={`py-5 border-b space-y-4 ${isLight ? 'border-slate-200/80' : 'border-slate-800/80'}`}>
                 <div>
-                  <h3 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+                  <h3 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
                     {selectedBatch.name}
                   </h3>
-                  <p className="text-sm font-medium mt-0.5 text-slate-600 dark:text-slate-300">
-                    {selectedBatch.dosage} • <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{selectedBatch.brand}</span>
+                  <p className="text-xs font-medium mt-0.5 text-slate-600 dark:text-slate-300">
+                    {selectedBatch.dosage} • <span className="text-blue-600 dark:text-blue-400 font-semibold">{selectedBatch.brand}</span>
                   </p>
                 </div>
 
                 {/* Key metadata grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-                  <div className={`p-3 rounded-xl border ${isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/70 border-slate-800'}`}>
-                    <span className="text-[10px] font-mono text-slate-500 uppercase block">Batch Number</span>
-                    <span className="text-xs font-bold font-mono text-slate-800 dark:text-slate-200 mt-0.5 block">{selectedBatch.batchNumber}</span>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+                  <div className={`p-2.5 rounded-xl border ${isLight ? 'bg-slate-50 border-slate-200/80' : 'bg-slate-950/50 border-slate-800/80'}`}>
+                    <span className="text-[10px] font-mono text-slate-400 uppercase block">Batch Number</span>
+                    <span className="text-xs font-semibold font-mono text-slate-800 dark:text-slate-200 mt-0.5 block">{selectedBatch.batchNumber}</span>
                   </div>
-                  <div className={`p-3 rounded-xl border ${isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/70 border-slate-800'}`}>
-                    <span className="text-[10px] font-mono text-slate-500 uppercase block">Unique Serial #</span>
-                    <span className="text-xs font-bold font-mono text-emerald-600 dark:text-emerald-400 mt-0.5 block truncate" title={selectedBatch.serialNumber}>
+                  <div className={`p-2.5 rounded-xl border ${isLight ? 'bg-slate-50 border-slate-200/80' : 'bg-slate-950/50 border-slate-800/80'}`}>
+                    <span className="text-[10px] font-mono text-slate-400 uppercase block">Unique Serial #</span>
+                    <span className="text-xs font-semibold font-mono text-blue-600 dark:text-blue-400 mt-0.5 block truncate" title={selectedBatch.serialNumber}>
                       {selectedBatch.serialNumber}
                     </span>
                   </div>
-                  <div className={`p-3 rounded-xl border ${isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/70 border-slate-800'}`}>
-                    <span className="text-[10px] font-mono text-slate-500 uppercase block">NDC / GTIN</span>
-                    <span className="text-xs font-bold font-mono text-slate-800 dark:text-slate-200 mt-0.5 block">{selectedBatch.ndc}</span>
+                  <div className={`p-2.5 rounded-xl border ${isLight ? 'bg-slate-50 border-slate-200/80' : 'bg-slate-950/50 border-slate-800/80'}`}>
+                    <span className="text-[10px] font-mono text-slate-400 uppercase block">NDC / GTIN</span>
+                    <span className="text-xs font-semibold font-mono text-slate-800 dark:text-slate-200 mt-0.5 block">{selectedBatch.ndc}</span>
                   </div>
-                  <div className={`p-3 rounded-xl border ${isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/70 border-slate-800'}`}>
-                    <span className="text-[10px] font-mono text-slate-500 uppercase block">Scanned Location</span>
-                    <span className="text-xs font-bold text-slate-800 dark:text-slate-200 mt-0.5 block truncate" title={selectedBatch.currentLocation}>
+                  <div className={`p-2.5 rounded-xl border ${isLight ? 'bg-slate-50 border-slate-200/80' : 'bg-slate-950/50 border-slate-800/80'}`}>
+                    <span className="text-[10px] font-mono text-slate-400 uppercase block">Current Location</span>
+                    <span className="text-xs font-medium text-slate-800 dark:text-slate-200 mt-0.5 block truncate" title={selectedBatch.currentLocation}>
                       {selectedBatch.currentLocation}
                     </span>
                   </div>
                 </div>
 
                 {/* Active Composition & Packaging */}
-                <div className={`p-4 rounded-xl border text-xs space-y-2 ${
-                  isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/50 border-slate-800/80'
+                <div className={`p-3.5 rounded-xl border text-xs space-y-2 ${
+                  isLight ? 'bg-slate-50/80 border-slate-200/80' : 'bg-slate-950/40 border-slate-800/70'
                 }`}>
                   <div className="flex items-start gap-2">
-                    <span className="text-slate-500 font-semibold w-24 flex-shrink-0">Composition:</span>
+                    <span className="text-slate-500 font-medium w-24 flex-shrink-0">Composition:</span>
                     <span className="text-slate-700 dark:text-slate-300">{selectedBatch.composition}</span>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className="text-slate-500 font-semibold w-24 flex-shrink-0">Packaging:</span>
+                    <span className="text-slate-500 font-medium w-24 flex-shrink-0">Packaging:</span>
                     <span className="text-slate-700 dark:text-slate-300">{selectedBatch.packageType}</span>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className="text-slate-500 font-semibold w-24 flex-shrink-0">Storage Spec:</span>
-                    <span className="text-slate-700 dark:text-slate-300 flex items-center gap-1">
+                    <span className="text-slate-500 font-medium w-24 flex-shrink-0">Storage Spec:</span>
+                    <span className="text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                       <Thermometer className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
                       {selectedBatch.storageTemp} (Current: <strong className="text-slate-900 dark:text-white">{selectedBatch.currentTemp}</strong>)
                     </span>
@@ -317,35 +314,35 @@ export default function VerificationPortal({
               </div>
 
               {/* Expiry & Lifecycle Bar */}
-              <div className={`py-6 border-b space-y-3 ${isLight ? 'border-slate-200' : 'border-slate-800'}`}>
+              <div className={`py-5 border-b space-y-2.5 ${isLight ? 'border-slate-200/80' : 'border-slate-800/80'}`}>
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
-                    <Calendar className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                    <span>Manufactured: <strong className="text-slate-900 dark:text-white">{selectedBatch.manufactureDate}</strong></span>
+                    <Calendar className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                    <span>Manufactured: <strong className="text-slate-900 dark:text-white font-medium">{selectedBatch.manufactureDate}</strong></span>
                   </div>
                   <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
-                    <Clock className="w-4 h-4 text-amber-500" />
-                    <span>Expires: <strong className={daysLeft < 60 ? 'text-rose-500' : 'text-slate-900 dark:text-white'}>{selectedBatch.expiryDate}</strong></span>
+                    <Clock className="w-3.5 h-3.5 text-amber-500" />
+                    <span>Expires: <strong className={`font-medium ${daysLeft < 60 ? 'text-amber-600' : 'text-slate-900 dark:text-white'}`}>{selectedBatch.expiryDate}</strong></span>
                   </div>
                   <div className="font-mono text-xs font-semibold">
                     {daysLeft > 0 ? (
-                      <span className={daysLeft < 90 ? 'text-amber-500' : 'text-emerald-600 dark:text-emerald-400'}>
+                      <span className={daysLeft < 90 ? 'text-amber-600 dark:text-amber-400' : 'text-blue-600 dark:text-blue-400'}>
                         {daysLeft} Days Remaining
                       </span>
                     ) : (
-                      <span className="text-rose-500 font-bold">EXPIRED</span>
+                      <span className="text-purple-600 dark:text-purple-400 font-bold">EXPIRED</span>
                     )}
                   </div>
                 </div>
 
-                <div className={`w-full h-2.5 rounded-full overflow-hidden border ${isLight ? 'bg-slate-200 border-slate-300' : 'bg-slate-950 border-slate-800'}`}>
+                <div className={`w-full h-2 rounded-full overflow-hidden border ${isLight ? 'bg-slate-200 border-slate-300/80' : 'bg-slate-950 border-slate-800'}`}>
                   <div 
                     className={`h-full transition-all duration-500 rounded-full ${
                       daysLeft > 365 
-                        ? 'bg-gradient-to-r from-emerald-500 to-teal-400' 
+                        ? 'bg-gradient-to-r from-blue-600 to-cyan-500' 
                         : daysLeft > 90 
-                        ? 'bg-gradient-to-r from-amber-500 to-emerald-400' 
-                        : 'bg-rose-500'
+                        ? 'bg-gradient-to-r from-amber-500 to-blue-500' 
+                        : 'bg-purple-600'
                     }`}
                     style={{ width: `${Math.min(100, Math.max(10, (daysLeft / 1095) * 100))}%` }}
                   ></div>
@@ -353,61 +350,61 @@ export default function VerificationPortal({
               </div>
 
               {/* Security Seal & Tamper Checklist */}
-              <div className="pt-6">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
-                  Autonomous Cryptographic Verification Checklist
+              <div className="pt-5">
+                <h4 className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
+                  Autonomous Verification Parameters
                 </h4>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                   <div className={`p-2.5 rounded-lg border flex items-center justify-between ${
                     selectedBatch.tamperChecklist.sealIntegrity
-                      ? 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-300 dark:border-emerald-500/20 text-emerald-800 dark:text-emerald-300'
-                      : 'bg-rose-50 dark:bg-rose-950/20 border-rose-300 dark:border-rose-500/20 text-rose-800 dark:text-rose-300'
+                      ? 'bg-blue-50/70 dark:bg-blue-950/20 border-blue-200 dark:border-blue-500/20 text-blue-900 dark:text-blue-200'
+                      : 'bg-purple-50/70 dark:bg-purple-950/20 border-purple-200 dark:border-purple-500/20 text-purple-900 dark:text-purple-200'
                   }`}>
-                    <span>1. Tamper-Evident Seal Monitored</span>
+                    <span className="font-medium">1. Tamper-Evident Seal Monitored</span>
                     {selectedBatch.tamperChecklist.sealIntegrity ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     ) : (
-                      <XCircle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
+                      <XCircle className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                     )}
                   </div>
 
                   <div className={`p-2.5 rounded-lg border flex items-center justify-between ${
                     selectedBatch.tamperChecklist.hologramValid
-                      ? 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-300 dark:border-emerald-500/20 text-emerald-800 dark:text-emerald-300'
-                      : 'bg-rose-50 dark:bg-rose-950/20 border-rose-300 dark:border-rose-500/20 text-rose-800 dark:text-rose-300'
+                      ? 'bg-blue-50/70 dark:bg-blue-950/20 border-blue-200 dark:border-blue-500/20 text-blue-900 dark:text-blue-200'
+                      : 'bg-purple-50/70 dark:bg-purple-950/20 border-purple-200 dark:border-purple-500/20 text-purple-900 dark:text-purple-200'
                   }`}>
-                    <span>2. Micro-Hologram Feature Valid</span>
+                    <span className="font-medium">2. Micro-Hologram Feature Valid</span>
                     {selectedBatch.tamperChecklist.hologramValid ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     ) : (
-                      <XCircle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
+                      <XCircle className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                     )}
                   </div>
 
                   <div className={`p-2.5 rounded-lg border flex items-center justify-between ${
                     selectedBatch.tamperChecklist.hashMatched
-                      ? 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-300 dark:border-emerald-500/20 text-emerald-800 dark:text-emerald-300'
-                      : 'bg-rose-50 dark:bg-rose-950/20 border-rose-300 dark:border-rose-500/20 text-rose-800 dark:text-rose-300'
+                      ? 'bg-blue-50/70 dark:bg-blue-950/20 border-blue-200 dark:border-blue-500/20 text-blue-900 dark:text-blue-200'
+                      : 'bg-purple-50/70 dark:bg-purple-950/20 border-purple-200 dark:border-purple-500/20 text-purple-900 dark:text-purple-200'
                   }`}>
-                    <span>3. Smart Contract Hash Integrity</span>
+                    <span className="font-medium">3. Smart Contract Hash Integrity</span>
                     {selectedBatch.tamperChecklist.hashMatched ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     ) : (
-                      <XCircle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
+                      <XCircle className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                     )}
                   </div>
 
                   <div className={`p-2.5 rounded-lg border flex items-center justify-between ${
                     selectedBatch.tamperChecklist.noDuplicateScans
-                      ? 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-300 dark:border-emerald-500/20 text-emerald-800 dark:text-emerald-300'
-                      : 'bg-rose-50 dark:bg-rose-950/20 border-rose-300 dark:border-rose-500/20 text-rose-800 dark:text-rose-300'
+                      ? 'bg-blue-50/70 dark:bg-blue-950/20 border-blue-200 dark:border-blue-500/20 text-blue-900 dark:text-blue-200'
+                      : 'bg-purple-50/70 dark:bg-purple-950/20 border-purple-200 dark:border-purple-500/20 text-purple-900 dark:text-purple-200'
                   }`}>
-                    <span>4. Zero Duplicate Serial Collisions</span>
+                    <span className="font-medium">4. Zero Duplicate Serial Collisions</span>
                     {selectedBatch.tamperChecklist.noDuplicateScans ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     ) : (
-                      <XCircle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
+                      <XCircle className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                     )}
                   </div>
                 </div>
@@ -426,111 +423,110 @@ export default function VerificationPortal({
           <div className="space-y-6">
             
             {/* Digital Passport Card */}
-            <div className={`border rounded-2xl p-6 shadow-xl space-y-5 transition-colors ${
-              isLight ? 'bg-white border-slate-200' : 'bg-slate-900 border-slate-800'
+            <div className={`border rounded-2xl p-5 shadow-xs space-y-4 transition-colors ${
+              isLight ? 'bg-white border-slate-200/80' : 'bg-slate-900/90 border-slate-800/80'
             }`}>
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                  <Lock className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                <h4 className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5 uppercase tracking-wide">
+                  <Lock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   Digital Medicine Passport
                 </h4>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
                   ERC-721 Tokenized
                 </span>
               </div>
 
               {/* QR Code Container */}
-              <div className="p-4 bg-white rounded-2xl shadow-inner border border-slate-200 flex flex-col items-center justify-center">
+              <div className="p-4 bg-white rounded-xl shadow-xs border border-slate-200 flex flex-col items-center justify-center">
                 <QRCodeSVG
                   value={`https://meditrace.health/verify?id=${selectedBatch.id}&sn=${selectedBatch.serialNumber}`}
-                  size={160}
+                  size={150}
                   level="H"
                   includeMargin={true}
                 />
-                <div className="text-[11px] font-mono text-slate-800 mt-2 font-semibold">
+                <div className="text-[11px] font-mono text-slate-800 mt-2 font-medium">
                   {selectedBatch.serialNumber}
                 </div>
               </div>
 
-              <p className="text-xs text-slate-500 dark:text-slate-400 text-center leading-relaxed">
-                Packaging 2D DataMatrix with ECDSA private-key signature to prevent counterfeit replication.
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 text-center leading-relaxed">
+                Packaging 2D DataMatrix with ECDSA cryptographic signature preventing counterfeit replication.
               </p>
 
               {/* Action Buttons */}
-              <div className={`space-y-2 pt-2 border-t ${isLight ? 'border-slate-200' : 'border-slate-800'}`}>
-                {/* BETTER PRINT CERTIFICATE BUTTON */}
+              <div className={`space-y-2 pt-2 border-t ${isLight ? 'border-slate-200/80' : 'border-slate-800/80'}`}>
                 <button
                   onClick={() => setIsPrintModalOpen(true)}
-                  className="w-full py-2.5 px-4 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20 transition-all hover:scale-[1.01]"
+                  className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white flex items-center justify-center gap-2 shadow-xs transition-all hover:scale-[1.01]"
                 >
-                  <Printer className="w-4 h-4" />
-                  <span>Open Official Verification Certificate</span>
+                  <Printer className="w-3.5 h-3.5" />
+                  <span>Open Verification Certificate</span>
                 </button>
 
                 <button
                   onClick={handleShare}
-                  className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border transition-colors ${
+                  className={`w-full py-2.5 px-4 rounded-xl text-xs font-medium flex items-center justify-center gap-2 border transition-colors ${
                     isLight
                       ? 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300'
                       : 'bg-slate-800/60 hover:bg-slate-800 text-slate-300 border-slate-800'
                   }`}
                 >
-                  <Share2 className="w-4 h-4" />
-                  <span>{copiedLink ? 'Link Copied to Clipboard!' : 'Share Public Verification Record'}</span>
+                  <Share2 className="w-3.5 h-3.5" />
+                  <span>{copiedLink ? 'Link Copied to Clipboard!' : 'Share Public Record'}</span>
                 </button>
               </div>
             </div>
 
             {/* Blockchain Node Proof Details */}
-            <div className={`border rounded-2xl p-6 shadow-xl space-y-4 transition-colors ${
-              isLight ? 'bg-white border-slate-200' : 'bg-slate-900 border-slate-800'
+            <div className={`border rounded-2xl p-5 shadow-xs space-y-3.5 transition-colors ${
+              isLight ? 'bg-white border-slate-200/80' : 'bg-slate-900/90 border-slate-800/80'
             }`}>
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                  <Cpu className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                <h4 className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5 uppercase tracking-wide">
+                  <Cpu className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
                   Immutable Ledger Proof
                 </h4>
                 <button 
                   onClick={onNavigateToLedger}
-                  className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline flex items-center gap-1 transition-colors"
+                  className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 transition-colors"
                 >
                   <span>Explorer</span>
                   <ArrowRight className="w-3 h-3" />
                 </button>
               </div>
 
-              <div className="space-y-3 text-xs">
+              <div className="space-y-2.5 text-xs">
                 <div>
-                  <span className="text-slate-500 font-mono text-[10px] uppercase block">Blockchain Block</span>
-                  <span className="text-slate-800 dark:text-slate-200 font-mono font-bold">#{selectedBatch.cryptoProof.blockNumber}</span>
+                  <span className="text-slate-400 font-mono text-[10px] uppercase block">Blockchain Block</span>
+                  <span className="text-slate-800 dark:text-slate-200 font-mono font-semibold">#{selectedBatch.cryptoProof.blockNumber}</span>
                 </div>
 
                 <div>
-                  <span className="text-slate-500 font-mono text-[10px] uppercase block">Transaction Hash</span>
-                  <span className="text-emerald-600 dark:text-emerald-400 font-mono text-[11px] break-all block">
+                  <span className="text-slate-400 font-mono text-[10px] uppercase block">Transaction Hash</span>
+                  <span className="text-blue-600 dark:text-blue-400 font-mono text-[11px] break-all block">
                     {selectedBatch.cryptoProof.txHash}
                   </span>
                 </div>
 
                 <div>
-                  <span className="text-slate-500 font-mono text-[10px] uppercase block">Merkle State Root</span>
+                  <span className="text-slate-400 font-mono text-[10px] uppercase block">Merkle State Root</span>
                   <span className="text-slate-700 dark:text-slate-300 font-mono text-[11px] break-all block">
                     {selectedBatch.cryptoProof.merkleRoot}
                   </span>
                 </div>
 
                 <div>
-                  <span className="text-slate-500 font-mono text-[10px] uppercase block">Smart Contract Core</span>
-                  <span className="text-cyan-600 dark:text-cyan-400 font-mono text-[11px] break-all block">
+                  <span className="text-slate-400 font-mono text-[10px] uppercase block">Smart Contract Core</span>
+                  <span className="text-indigo-600 dark:text-indigo-400 font-mono text-[11px] break-all block">
                     {selectedBatch.cryptoProof.smartContract}
                   </span>
                 </div>
 
                 <div className={`pt-2 border-t text-slate-500 text-[11px] flex items-center justify-between ${
-                  isLight ? 'border-slate-200' : 'border-slate-800'
+                  isLight ? 'border-slate-200/80' : 'border-slate-800/80'
                 }`}>
                   <span>Consensus Proof:</span>
-                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{selectedBatch.cryptoProof.consensus}</span>
+                  <span className="text-blue-600 dark:text-blue-400 font-medium">{selectedBatch.cryptoProof.consensus}</span>
                 </div>
               </div>
             </div>

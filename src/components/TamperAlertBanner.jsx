@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { 
   ShieldAlert, 
   AlertTriangle, 
@@ -23,65 +23,60 @@ export default function TamperAlertBanner({ batch, onOpenReport, theme }) {
   const isColdBreach = batch.status === 'COLD_CHAIN_BREACH';
 
   return (
-    <div className={`rounded-2xl border p-5 mb-6 shadow-2xl relative overflow-hidden transition-colors ${
+    <div className={`rounded-2xl border p-5 mb-5 shadow-xs relative overflow-hidden transition-colors ${
       isLight
         ? isDuplicate
-          ? 'bg-rose-50 border-rose-300 shadow-rose-500/10'
+          ? 'bg-purple-50/70 border-purple-200'
           : isRecall
-          ? 'bg-amber-50 border-amber-300 shadow-amber-500/10'
-          : 'bg-cyan-50 border-cyan-300 shadow-cyan-500/10'
+          ? 'bg-amber-50/70 border-amber-200'
+          : 'bg-cyan-50/70 border-cyan-200'
         : isDuplicate 
-        ? 'bg-rose-950/40 border-rose-500/60 shadow-rose-950/50' 
+        ? 'bg-purple-950/30 border-purple-500/40' 
         : isRecall 
-        ? 'bg-amber-950/40 border-amber-500/60 shadow-amber-950/50'
-        : 'bg-cyan-950/40 border-cyan-500/60 shadow-cyan-950/50'
+        ? 'bg-amber-950/30 border-amber-500/40'
+        : 'bg-cyan-950/30 border-cyan-500/40'
     }`}>
-      {/* Background glow effect */}
-      <div className={`absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl pointer-events-none opacity-20 -mr-20 -mt-20 ${
-        isDuplicate ? 'bg-rose-500' : isRecall ? 'bg-amber-500' : 'bg-cyan-500'
-      }`}></div>
-
       <div className="relative z-10">
         {/* Banner Top Header */}
         <div className={`flex flex-wrap items-center justify-between gap-3 pb-3 border-b ${
-          isLight ? 'border-slate-200' : 'border-slate-800/80'
+          isLight ? 'border-slate-200/80' : 'border-slate-800/80'
         }`}>
           <div className="flex items-center gap-3">
-            <div className={`p-2.5 rounded-xl border flex items-center justify-center animate-pulse ${
+            <div className={`p-2.5 rounded-xl border flex items-center justify-center ${
               isDuplicate 
-                ? 'bg-rose-500/20 border-rose-500/40 text-rose-600 dark:text-rose-400' 
+                ? 'bg-purple-500/15 border-purple-500/30 text-purple-600 dark:text-purple-400' 
                 : isRecall
-                ? 'bg-amber-500/20 border-amber-500/40 text-amber-600 dark:text-amber-400'
-                : 'bg-cyan-500/20 border-cyan-500/40 text-cyan-600 dark:text-cyan-400'
+                ? 'bg-amber-500/15 border-amber-500/30 text-amber-600 dark:text-amber-400'
+                : 'bg-cyan-500/15 border-cyan-500/30 text-cyan-600 dark:text-cyan-400'
             }`}>
               {isDuplicate ? (
-                <ShieldAlert className="w-7 h-7" />
+                <ShieldAlert className="w-6 h-6" />
               ) : isRecall ? (
-                <FileWarning className="w-7 h-7" />
+                <FileWarning className="w-6 h-6" />
               ) : (
-                <ThermometerSnowflake className="w-7 h-7" />
+                <ThermometerSnowflake className="w-6 h-6" />
               )}
             </div>
 
             <div>
               <div className="flex items-center gap-2">
-                <span className={`text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
+                <span className={`text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md ${
                   isDuplicate 
-                    ? 'bg-rose-600 text-white' 
+                    ? 'bg-purple-600 text-white' 
                     : isRecall 
-                    ? 'bg-amber-500 text-slate-950 font-black' 
+                    ? 'bg-amber-500 text-slate-950 font-bold' 
                     : 'bg-cyan-600 text-white'
                 }`}>
-                  {isDuplicate ? 'Critical Security Flag' : isRecall ? 'Urgent Safety Recall' : 'Cold-Chain Failure'}
+                  {isDuplicate ? 'Serial Collision Flag' : isRecall ? 'Regulatory Notice' : 'Cold-Chain Notice'}
                 </span>
                 <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
                   REF: {batch.serialNumber}
                 </span>
               </div>
-              <h3 className="text-xl font-extrabold text-slate-900 dark:text-white mt-1">
-                {isDuplicate && 'DUPLICATE SERIAL DETECTED — SUSPECTED COUNTERFEIT'}
-                {isRecall && `BATCH RECALLED BY REGULATORY AUTHORITY: ${batch.recallNotice?.recallId || 'URGENT NOTICE'}`}
-                {isColdBreach && 'TEMPERATURE VIOLATION — EFFICACY DEGRADED'}
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mt-1">
+                {isDuplicate && 'Duplicate Serial Barcode Detected Across Disjoint Locations'}
+                {isRecall && `Batch Under Regulatory Recall Notice: ${batch.recallNotice?.recallId || 'Official Directive'}`}
+                {isColdBreach && 'Temperature Threshold Excursion Recorded in Transit'}
               </h3>
             </div>
           </div>
@@ -89,113 +84,73 @@ export default function TamperAlertBanner({ batch, onOpenReport, theme }) {
           <div className="flex items-center gap-2">
             <button
               onClick={onOpenReport}
-              className="px-3.5 py-2 rounded-lg text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white flex items-center gap-1.5 shadow-md shadow-rose-600/20 transition-all"
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
+                isLight 
+                  ? 'bg-white hover:bg-slate-100 border-slate-300 text-slate-800' 
+                  : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-white'
+              }`}
             >
-              <ShieldAlert className="w-4 h-4" />
-              File Quarantine Report
+              Report Discrepancy
             </button>
           </div>
         </div>
 
-        {/* Anomaly Breakdown Body */}
-        {isDuplicate && batch.anomalyDetails && (
-          <div className="mt-4 space-y-4">
-            <p className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
-              {batch.anomalyDetails.description}
-            </p>
-
-            {/* Conflicting Geolocation scans */}
-            <div className={`rounded-xl p-4 border ${
-              isLight ? 'bg-white border-rose-200' : 'bg-slate-950/70 border-rose-500/30'
-            }`}>
-              <h4 className="text-xs font-semibold text-rose-700 dark:text-rose-300 uppercase tracking-wider flex items-center gap-1.5 mb-3">
-                <MapPin className="w-4 h-4 text-rose-500" />
-                Concurrent Physical Scans In Conflict:
-              </h4>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                {batch.anomalyDetails.collisionLocations.map((loc, idx) => (
-                  <div key={idx} className={`p-3 rounded-lg border text-xs space-y-1 ${
-                    isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-900/80 border-slate-800'
-                  }`}>
-                    <div className="font-bold text-slate-900 dark:text-white flex items-center justify-between">
-                      <span>{loc.city}</span>
-                      <span className="text-[10px] text-rose-600 dark:text-rose-400 font-mono font-bold">Scan #{idx + 1}</span>
+        {/* Dynamic Detail Body */}
+        <div className="mt-4 text-xs">
+          {isDuplicate && (
+            <div className="space-y-3">
+              <p className="text-slate-700 dark:text-slate-300">
+                This item's unique serial number has been registered at more than one facility simultaneously, which often indicates unauthorized cloning or repackaging.
+              </p>
+              {batch.duplicateWarning && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <div className={`p-3 rounded-xl border ${isLight ? 'bg-white/90 border-purple-200' : 'bg-slate-900/80 border-purple-500/20'}`}>
+                    <div className="font-semibold text-purple-700 dark:text-purple-300 mb-1 flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5" /> First Confirmed Verification
                     </div>
-                    <div className="text-slate-600 dark:text-slate-400">{loc.store}</div>
-                    <div className="text-slate-500 font-mono text-[11px] flex items-center gap-1 pt-1">
-                      <Clock className="w-3 h-3 text-slate-400" />
-                      {loc.time}
+                    <div className="text-slate-600 dark:text-slate-400 text-[11px] space-y-0.5">
+                      <div>Location: {batch.duplicateWarning.originalLocation}</div>
+                      <div>Timestamp: {batch.duplicateWarning.originalTimestamp}</div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
 
-            <div className={`text-xs p-3 rounded-xl flex items-start gap-2 border ${
-              isLight 
-                ? 'bg-rose-100/70 border-rose-200 text-rose-900' 
-                : 'bg-rose-950/30 border-rose-900/50 text-rose-300'
-            }`}>
-              <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5 text-rose-600 dark:text-rose-400" />
-              <span><strong>Action Directive:</strong> {batch.anomalyDetails.recommendation}</span>
+                  <div className={`p-3 rounded-xl border ${isLight ? 'bg-white/90 border-purple-200' : 'bg-slate-900/80 border-purple-500/20'}`}>
+                    <div className="font-semibold text-purple-700 dark:text-purple-300 mb-1 flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5" /> Conflicting Duplicate Attempt
+                    </div>
+                    <div className="text-slate-600 dark:text-slate-400 text-[11px] space-y-0.5">
+                      <div>Location: {batch.duplicateWarning.conflictingLocation}</div>
+                      <div>Timestamp: {batch.duplicateWarning.conflictingTimestamp}</div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Recall Notice Body */}
-        {isRecall && batch.recallNotice && (
-          <div className="mt-4 space-y-3">
-            <div className={`rounded-xl p-4 border space-y-2 text-xs ${
-              isLight ? 'bg-white border-amber-200' : 'bg-slate-950/70 border-amber-500/30'
-            }`}>
-              <div className="flex flex-wrap items-center justify-between gap-2 text-amber-800 dark:text-amber-300 font-semibold">
-                <span className="font-bold text-sm">{batch.recallNotice.classification}</span>
-                <span className="font-mono text-slate-500 dark:text-slate-400">Issued by: {batch.recallNotice.issuingBody} ({batch.recallNotice.dateAnnounced})</span>
-              </div>
-              <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
-                <strong className="text-slate-900 dark:text-white">Reason for Recall:</strong> {batch.recallNotice.reason}
+          {isRecall && (
+            <div className="space-y-2">
+              <p className="text-slate-700 dark:text-slate-300">
+                {batch.recallNotice?.reason || 'Batch flagged by health authority due to packaging variation.'}
               </p>
-              <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg text-amber-900 dark:text-amber-200 text-xs">
-                <strong>Mandatory Pharmacy / Patient Protocol:</strong> {batch.recallNotice.actionRequired}
+              <div className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                Initiated By: {batch.recallNotice?.authority || 'FDA Regulatory Oracle'} • Level: {batch.recallNotice?.level || 'Class II'}
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Cold Chain Breach Body */}
-        {isColdBreach && batch.temperatureBreach && (
-          <div className="mt-4 space-y-3">
-            <div className={`rounded-xl p-4 border text-xs space-y-2 ${
-              isLight ? 'bg-white border-cyan-200' : 'bg-slate-950/70 border-cyan-500/30'
-            }`}>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <div className={`p-2.5 rounded-lg border ${isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-900 border-slate-800'}`}>
-                  <div className="text-slate-500 text-[10px]">Permitted Spec</div>
-                  <div className="font-bold text-slate-900 dark:text-white text-sm">{batch.temperatureBreach.permittedRange}</div>
-                </div>
-                <div className={`p-2.5 rounded-lg border ${isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-900 border-slate-800'}`}>
-                  <div className="text-rose-500 text-[10px]">Peak Excursion</div>
-                  <div className="font-bold text-rose-600 dark:text-rose-400 text-sm">{batch.temperatureBreach.peakRecorded}</div>
-                </div>
-                <div className={`p-2.5 rounded-lg border ${isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-900 border-slate-800'}`}>
-                  <div className="text-slate-500 text-[10px]">Excursion Duration</div>
-                  <div className="font-bold text-amber-600 dark:text-amber-400 text-sm">{batch.temperatureBreach.durationAboveThreshold}</div>
-                </div>
-                <div className={`p-2.5 rounded-lg border ${isLight ? 'bg-slate-50 border-slate-200' : 'bg-slate-900 border-slate-800'}`}>
-                  <div className="text-slate-500 text-[10px]">Telemetry Oracle</div>
-                  <div className="font-bold text-cyan-700 dark:text-cyan-400 text-xs truncate">{batch.temperatureBreach.carrierSensorId}</div>
-                </div>
-              </div>
-
-              <div className={`p-2.5 rounded-lg text-xs border ${
-                isLight ? 'bg-cyan-50 text-cyan-900 border-cyan-200' : 'bg-cyan-950/40 text-cyan-300 border-cyan-800/40'
-              }`}>
-                <strong>Biochemical Impact:</strong> {batch.temperatureBreach.impactAssessment}
+          {isColdBreach && (
+            <div className="space-y-2">
+              <p className="text-slate-700 dark:text-slate-300">
+                Smart data-logger detected temperature levels beyond specified limits during transit. Do not administer until secondary cold-chain audit is signed off.
+              </p>
+              <div className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                Current Sensor Reading: {batch.currentTemp} • Permitted Spec: {batch.storageTemp}
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
+
       </div>
     </div>
   );
