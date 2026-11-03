@@ -32,8 +32,8 @@ export default function FraudDetectionCenter({ batches, onSelectBatch, onOpenRep
       {/* Header Banner */}
       <div className={`border rounded-2xl p-6 sm:p-7 shadow-xs transition-colors duration-200 ${
         isLight
-          ? 'bg-gradient-to-r from-white via-purple-50/20 to-slate-50 border-slate-200/80'
-          : 'bg-gradient-to-r from-slate-900 via-slate-950 to-purple-950/20 border-slate-800/80'
+          ? 'bg-white border-slate-200/80'
+          : 'bg-slate-900 border-slate-800/80'
       }`}>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -58,7 +58,7 @@ export default function FraudDetectionCenter({ batches, onSelectBatch, onOpenRep
               onClick={handleBroadcast}
               className="px-4 py-2 rounded-xl bg-purple-700 hover:bg-purple-600 text-white font-semibold text-xs flex items-center gap-2 shadow-xs transition-all"
             >
-              <Radio className="w-3.5 h-3.5 animate-pulse" />
+              <Radio className="w-3.5 h-3.5" />
               <span>Broadcast Recall Directive</span>
             </button>
           </div>

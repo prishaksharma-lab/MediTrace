@@ -259,3 +259,10 @@ export const mockLedgerBlocks = [
     eventSummary: "Duplicate scan collision flagged on serial SN-2024-8842-F9K"
   }
 ];
+
+export const fraudMetrics = {
+  authenticityRate: "98.7%",
+  duplicateDetections: 142,
+  activeRecalls: 8,
+  thermalExcursions: 23
+};

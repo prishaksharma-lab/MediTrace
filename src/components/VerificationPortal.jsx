@@ -77,11 +77,9 @@ export default function VerificationPortal({
       {/* Top Search & Presets Hero */}
       <div className={`border rounded-2xl p-5 sm:p-7 shadow-xs relative overflow-hidden transition-colors duration-200 ${
         isLight
-          ? 'bg-gradient-to-br from-white via-slate-50 to-blue-50/30 border-slate-200/80'
-          : 'bg-gradient-to-br from-slate-900/90 via-slate-900 to-slate-950 border-slate-800/80'
+          ? 'bg-white border-slate-200/80'
+          : 'bg-slate-900 border-slate-800/80'
       }`}>
-        <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
-
         <div className="relative z-10 max-w-3xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-medium mb-3">
             <Sparkles className="w-3.5 h-3.5" />
@@ -339,9 +337,9 @@ export default function VerificationPortal({
                   <div 
                     className={`h-full transition-all duration-500 rounded-full ${
                       daysLeft > 365 
-                        ? 'bg-gradient-to-r from-blue-600 to-cyan-500' 
+                        ? 'bg-blue-600'
                         : daysLeft > 90 
-                        ? 'bg-gradient-to-r from-amber-500 to-blue-500' 
+                        ? 'bg-amber-500'
                         : 'bg-purple-600'
                     }`}
                     style={{ width: `${Math.min(100, Math.max(10, (daysLeft / 1095) * 100))}%` }}

@@ -13,7 +13,7 @@ import { ShieldCheck, HeartHandshake, FileCheck2, Cpu, Globe } from 'lucide-reac
 
 export default function App() {
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('meditrace_theme') || 'dark';
+    return localStorage.getItem('meditrace_theme_v2') || 'light';
   });
 
   const [activeTab, setActiveTab] = useState('verify'); // 'verify' | 'manufacturer' | 'distributor' | 'ledger' | 'fraud'
@@ -30,17 +30,17 @@ export default function App() {
 
   // Handle theme change & apply class to document
   useEffect(() => {
-    localStorage.setItem('meditrace_theme', theme);
+    localStorage.setItem('meditrace_theme_v2', theme);
     if (theme === 'light') {
       document.documentElement.classList.add('light');
       document.documentElement.classList.remove('dark');
-      document.body.style.backgroundColor = '#f8fafc';
-      document.body.style.color = '#0f172a';
+      document.body.style.backgroundColor = '#f7f6f1';
+      document.body.style.color = '#222f28';
     } else {
       document.documentElement.classList.remove('light');
       document.documentElement.classList.add('dark');
-      document.body.style.backgroundColor = '#0a0d14';
-      document.body.style.color = '#f8fafc';
+      document.body.style.backgroundColor = '#17231d';
+      document.body.style.color = '#f7f6f1';
     }
   }, [theme]);
 
@@ -120,7 +120,7 @@ export default function App() {
 
   return (
     <div className={`min-h-screen flex flex-col font-sans transition-colors duration-200 ${
-      isLight ? 'bg-slate-50/70 text-slate-900' : 'bg-[#0a0d14] text-slate-100'
+      isLight ? 'bg-slate-50/70 text-slate-900' : 'bg-[#17231d] text-slate-100'
     }`}>
       {/* Top Navbar */}
       <Navbar

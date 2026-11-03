@@ -75,8 +75,8 @@ export default function DistributorPortal({ batches, onAddJourneyEvent, theme, w
       {/* Header Banner */}
       <div className={`border rounded-2xl p-6 sm:p-7 shadow-xs transition-colors duration-200 ${
         isLight
-          ? 'bg-gradient-to-r from-white via-blue-50/20 to-slate-50 border-slate-200/80'
-          : 'bg-gradient-to-r from-slate-900 via-slate-950 to-blue-950/20 border-slate-800/80'
+          ? 'bg-white border-slate-200/80'
+          : 'bg-slate-900 border-slate-800/80'
       }`}>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
