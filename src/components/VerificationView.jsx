@@ -40,11 +40,16 @@ export default function VerificationView({
     }
   };
 
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  const handleShare = async () => {
+  const link = `${window.location.origin}/?sn=${encodeURIComponent(selectedBatch.serialNumber)}`;
+  try {
+    await navigator.clipboard.writeText(link);
+  } catch {
+    window.prompt('Copy this link:', link);
+  }
+  setCopiedLink(true);
+  setTimeout(() => setCopiedLink(false), 2000);
+};
 
   const isAuthentic = selectedBatch.status === 'AUTHENTIC';
   const isDuplicate = selectedBatch.status === 'SUSPICIOUS_DUPLICATE';

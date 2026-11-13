@@ -1,24 +1,12 @@
 ﻿import React, { useState } from 'react';
-import { 
-  Factory, 
-  PlusCircle, 
-  QrCode, 
-  Download, 
-  CheckCircle2, 
-  Sparkles, 
-  Layers, 
-  Cpu, 
-  FileCheck,
-  Calendar,
-  AlertCircle,
-  Wallet
-} from 'lucide-react';
+import { Factory, PlusCircle, QrCode, CheckCircle2, Wallet } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { mintBatchOnChain } from '../utils/web3Service';
+import { MEDITRACE_CONTRACT_ADDRESS } from '../utils/contractAbi';
 
-export default function ManufacturerPortal({ 
-  onBatchCreated, 
-  onSwitchToVerify, 
+export default function ManufacturerPortal({
+  onBatchCreated,
+  onSwitchToVerify,
   theme,
   walletAccount,
   onConnectWallet
@@ -45,6 +33,7 @@ export default function ManufacturerPortal({
   const [isMinting, setIsMinting] = useState(false);
   const [createdBatch, setCreatedBatch] = useState(null);
   const [txReceipt, setTxReceipt] = useState(null);
+  const [mintError, setMintError] = useState('');
 
   const simulatedHash = '0x' + Array.from(
     `${formData.batchNumber}-${formData.name}-${formData.manufactureDate}`
@@ -58,19 +47,23 @@ export default function ManufacturerPortal({
   const handleCreateBatch = async (e) => {
     e.preventDefault();
     setIsMinting(true);
+    setMintError('');
 
     try {
+      const generatedSerial = `SN-2025-${formData.batchNumber}-${Math.floor(1000 + Math.random() * 9000)}`;
+
       let web3Result = null;
       if (mintOnChain) {
         web3Result = await mintBatchOnChain({
+          serialNumber: generatedSerial,
           batchNumber: formData.batchNumber,
-          medicineName: formData.name,
-          manufacturer: formData.brand,
+          name: formData.name,
+          brand: formData.brand,
+          ndc: formData.ndc,
+          manufactureDate: formData.manufactureDate,
           expiryDate: formData.expiryDate
         });
       }
-
-      const generatedSerial = `SN-2025-${formData.batchNumber}-${Math.floor(1000 + Math.random() * 9000)}`;
 
       const newBatch = {
         id: `MT-${Math.floor(1000 + Math.random() * 9000)}-AUTH`,
@@ -94,12 +87,11 @@ export default function ManufacturerPortal({
         manufacturerAddress: formData.plantLocation,
         currentLocation: formData.plantLocation,
         cryptoProof: {
-          blockNumber: web3Result?.blockNumber || 819249,
+          blockNumber: web3Result?.blockNumber || 'Not on-chain',
           txHash: web3Result?.txHash || simulatedHash,
-          merkleRoot: '0x' + Math.random().toString(16).substring(2).padEnd(64, '0'),
-          digitalSignature: `ECDSA-SECP256K1-${(walletAccount || '0x71C5...4920').substring(0, 8)}`,
-          smartContract: '0x3e17B7A9e3158c8DbFe6c986Db214A3Fa0B29D55',
-          consensus: '14/14 Validator Nodes Confirmed'
+          merkleRoot: 'N/A (future scope)',
+          digitalSignature: `Signed by wallet ${(walletAccount || 'not connected').substring(0, 10)}`,
+          smartContract: MEDITRACE_CONTRACT_ADDRESS
         },
         tamperChecklist: {
           sealIntegrity: true,
@@ -113,16 +105,15 @@ export default function ManufacturerPortal({
           {
             id: `ev-${Date.now()}-1`,
             stage: 'Manufacturing & Serialization',
-            title: 'Batch Genesis & Cryptographic Sealing',
+            title: 'Batch Genesis',
             facility: formData.plantLocation,
             location: 'USA',
-            timestamp: new Date().toISOString().replace('T', ' ').substring(0, 16) + ' EST',
+            timestamp: new Date().toISOString().replace('T', ' ').substring(0, 16),
             status: 'COMPLETED',
             authorizedBy: formData.leadPharmacist,
-            did: `did:meditrace:mfg:${formData.brand.toLowerCase().replace(/[^a-z0-9]/g, '')}`,
-            details: `Lot of ${formData.totalUnits.toLocaleString()} units minted. Unique cryptographic ECDSA keys paired with GS1 DataMatrix identifiers.`,
+            details: `Lot of ${Number(formData.totalUnits).toLocaleString()} units registered.`,
             txHash: web3Result?.txHash || simulatedHash,
-            block: web3Result?.blockNumber || 819249
+            block: web3Result?.blockNumber || 0
           }
         ]
       };
@@ -130,27 +121,27 @@ export default function ManufacturerPortal({
       setCreatedBatch(newBatch);
       setTxReceipt({
         txHash: web3Result?.txHash || simulatedHash,
-        block: web3Result?.blockNumber || 819249,
-        gasUsed: '142,820'
+        block: web3Result?.blockNumber || 0
       });
-
       onBatchCreated(newBatch);
     } catch (err) {
       console.error('Error minting batch:', err);
+      setMintError(err.shortMessage || err.message || 'Transaction failed');
     } finally {
       setIsMinting(false);
     }
   };
 
+  const inputCls = (extra = '') =>
+    `w-full px-3 py-2 text-xs ${extra} rounded-xl border transition-colors outline-none focus:ring-1 focus:ring-blue-500 ${
+      isLight ? 'bg-slate-50 border-slate-300 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
+    }`;
+  const labelCls = 'block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1';
+  const cardCls = isLight ? 'bg-white border-slate-200/80' : 'bg-slate-900/90 border-slate-800/80';
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-6">
-      
-      {/* Header Banner */}
-      <div className={`border rounded-2xl p-6 sm:p-7 shadow-xs transition-colors duration-200 ${
-        isLight
-          ? 'bg-white border-slate-200/80'
-          : 'bg-slate-900 border-slate-800/80'
-      }`}>
+      <div className={`border rounded-2xl p-6 sm:p-7 shadow-xs ${cardCls}`}>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
@@ -164,31 +155,24 @@ export default function ManufacturerPortal({
                 Manufacturer Batch Minting & Serialization
               </h1>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
-                Register verified medicine production batches directly onto decentralized ledgers.
+                Register verified medicine production batches directly onto the blockchain.
               </p>
             </div>
           </div>
-
-          <div className="flex items-center gap-2">
-            {!walletAccount && (
-              <button
-                onClick={onConnectWallet}
-                className="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center gap-1.5 shadow-xs transition-all"
-              >
-                <Wallet className="w-3.5 h-3.5" />
-                <span>Connect Oracle Node</span>
-              </button>
-            )}
-          </div>
+          {!walletAccount && (
+            <button
+              onClick={onConnectWallet}
+              className="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center gap-1.5"
+            >
+              <Wallet className="w-3.5 h-3.5" />
+              <span>Connect Wallet</span>
+            </button>
+          )}
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        {/* Minting Form */}
-        <div className={`lg:col-span-2 border rounded-2xl p-6 shadow-xs transition-colors ${
-          isLight ? 'bg-white border-slate-200/80' : 'bg-slate-900/90 border-slate-800/80'
-        }`}>
+        <div className={`lg:col-span-2 border rounded-2xl p-6 shadow-xs ${cardCls}`}>
           <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-4 uppercase tracking-wide">
             Batch Serialization Parameters
           </h3>
@@ -196,199 +180,71 @@ export default function ManufacturerPortal({
           <form onSubmit={handleCreateBatch} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Medicine Brand Name & Molecule
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-3 py-2 text-xs rounded-xl border transition-colors outline-none focus:ring-1 focus:ring-blue-500 ${
-                    isLight ? 'bg-slate-50 border-slate-300 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                  }`}
-                />
+                <label className={labelCls}>Medicine Brand Name & Molecule</label>
+                <input type="text" name="name" value={formData.name} onChange={handleChange} required className={inputCls()} />
               </div>
-
               <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Manufacturer License Holder
-                </label>
-                <input
-                  type="text"
-                  name="brand"
-                  value={formData.brand}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-3 py-2 text-xs rounded-xl border transition-colors outline-none focus:ring-1 focus:ring-blue-500 ${
-                    isLight ? 'bg-slate-50 border-slate-300 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                  }`}
-                />
+                <label className={labelCls}>Manufacturer License Holder</label>
+                <input type="text" name="brand" value={formData.brand} onChange={handleChange} required className={inputCls()} />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Dosage Formulation
-                </label>
-                <input
-                  type="text"
-                  name="dosage"
-                  value={formData.dosage}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-3 py-2 text-xs rounded-xl border transition-colors outline-none focus:ring-1 focus:ring-blue-500 ${
-                    isLight ? 'bg-slate-50 border-slate-300 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                  }`}
-                />
+                <label className={labelCls}>Dosage Formulation</label>
+                <input type="text" name="dosage" value={formData.dosage} onChange={handleChange} required className={inputCls()} />
               </div>
-
               <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Batch / Lot ID
-                </label>
-                <input
-                  type="text"
-                  name="batchNumber"
-                  value={formData.batchNumber}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-3 py-2 text-xs font-mono rounded-xl border transition-colors outline-none focus:ring-1 focus:ring-blue-500 ${
-                    isLight ? 'bg-slate-50 border-slate-300 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                  }`}
-                />
+                <label className={labelCls}>Batch / Lot ID</label>
+                <input type="text" name="batchNumber" value={formData.batchNumber} onChange={handleChange} required className={inputCls('font-mono')} />
               </div>
-
               <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  NDC / FDA Identifier
-                </label>
-                <input
-                  type="text"
-                  name="ndc"
-                  value={formData.ndc}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-3 py-2 text-xs font-mono rounded-xl border transition-colors outline-none focus:ring-1 focus:ring-blue-500 ${
-                    isLight ? 'bg-slate-50 border-slate-300 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                  }`}
-                />
+                <label className={labelCls}>NDC / FDA Identifier</label>
+                <input type="text" name="ndc" value={formData.ndc} onChange={handleChange} required className={inputCls('font-mono')} />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Manufacture Date
-                </label>
-                <input
-                  type="date"
-                  name="manufactureDate"
-                  value={formData.manufactureDate}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-3 py-2 text-xs rounded-xl border transition-colors outline-none focus:ring-1 focus:ring-blue-500 ${
-                    isLight ? 'bg-slate-50 border-slate-300 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                  }`}
-                />
+                <label className={labelCls}>Manufacture Date</label>
+                <input type="date" name="manufactureDate" value={formData.manufactureDate} onChange={handleChange} required className={inputCls()} />
               </div>
-
               <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Expiration Date
-                </label>
-                <input
-                  type="date"
-                  name="expiryDate"
-                  value={formData.expiryDate}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-3 py-2 text-xs rounded-xl border transition-colors outline-none focus:ring-1 focus:ring-blue-500 ${
-                    isLight ? 'bg-slate-50 border-slate-300 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                  }`}
-                />
+                <label className={labelCls}>Expiration Date</label>
+                <input type="date" name="expiryDate" value={formData.expiryDate} onChange={handleChange} required className={inputCls()} />
               </div>
-
               <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Units To Mint
-                </label>
-                <input
-                  type="number"
-                  name="totalUnits"
-                  value={formData.totalUnits}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-3 py-2 text-xs rounded-xl border transition-colors outline-none focus:ring-1 focus:ring-blue-500 ${
-                    isLight ? 'bg-slate-50 border-slate-300 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                  }`}
-                />
+                <label className={labelCls}>Units To Mint</label>
+                <input type="number" name="totalUnits" value={formData.totalUnits} onChange={handleChange} required className={inputCls()} />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                Active Chemical Ingredients & Excipients
-              </label>
-              <input
-                type="text"
-                name="composition"
-                value={formData.composition}
-                onChange={handleChange}
-                required
-                className={`w-full px-3 py-2 text-xs rounded-xl border transition-colors outline-none focus:ring-1 focus:ring-blue-500 ${
-                  isLight ? 'bg-slate-50 border-slate-300 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                }`}
-              />
+              <label className={labelCls}>Active Chemical Ingredients & Excipients</label>
+              <input type="text" name="composition" value={formData.composition} onChange={handleChange} required className={inputCls()} />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Manufacturing Facility & Plant ID
-                </label>
-                <input
-                  type="text"
-                  name="plantLocation"
-                  value={formData.plantLocation}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-3 py-2 text-xs rounded-xl border transition-colors outline-none focus:ring-1 focus:ring-blue-500 ${
-                    isLight ? 'bg-slate-50 border-slate-300 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                  }`}
-                />
+                <label className={labelCls}>Manufacturing Facility & Plant ID</label>
+                <input type="text" name="plantLocation" value={formData.plantLocation} onChange={handleChange} required className={inputCls()} />
               </div>
-
               <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Lead Pharmacist Signer
-                </label>
-                <input
-                  type="text"
-                  name="leadPharmacist"
-                  value={formData.leadPharmacist}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-3 py-2 text-xs rounded-xl border transition-colors outline-none focus:ring-1 focus:ring-blue-500 ${
-                    isLight ? 'bg-slate-50 border-slate-300 text-slate-900' : 'bg-slate-950 border-slate-800 text-white'
-                  }`}
-                />
+                <label className={labelCls}>Lead Pharmacist Signer</label>
+                <input type="text" name="leadPharmacist" value={formData.leadPharmacist} onChange={handleChange} required className={inputCls()} />
               </div>
             </div>
 
-            {/* Checkbox for On-chain commit */}
             <div className="pt-2 flex items-center gap-2">
               <input
                 type="checkbox"
                 id="mintOnChain"
                 checked={mintOnChain}
                 onChange={(e) => setMintOnChain(e.target.checked)}
-                className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500 border-slate-300 dark:border-slate-700"
+                className="w-4 h-4 rounded text-blue-600"
               />
               <label htmlFor="mintOnChain" className="text-xs text-slate-700 dark:text-slate-300">
-                Commit cryptographic proof to MediTrace Smart Contract
+                Commit batch to MediTrace Smart Contract (Sepolia)
               </label>
             </div>
 
@@ -396,12 +252,12 @@ export default function ManufacturerPortal({
               <button
                 type="submit"
                 disabled={isMinting}
-                className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-xs transition-all"
+                className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold text-xs flex items-center justify-center gap-2"
               >
                 {isMinting ? (
                   <>
                     <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                    <span>Minting Cryptographic Tokens...</span>
+                    <span>Waiting for transaction...</span>
                   </>
                 ) : (
                   <>
@@ -410,15 +266,13 @@ export default function ManufacturerPortal({
                   </>
                 )}
               </button>
+              {mintError && <p className="text-xs text-red-600 pt-2">Mint failed: {mintError}</p>}
             </div>
           </form>
         </div>
 
-        {/* Live Preview / Mint Receipt */}
         <div className="space-y-4">
-          <div className={`border rounded-2xl p-5 shadow-xs transition-colors space-y-4 ${
-            isLight ? 'bg-white border-slate-200/80' : 'bg-slate-900/90 border-slate-800/80'
-          }`}>
+          <div className={`border rounded-2xl p-5 shadow-xs space-y-4 ${cardCls}`}>
             <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wide flex items-center gap-2">
               <QrCode className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               Packaging Serialization Preview
@@ -435,20 +289,31 @@ export default function ManufacturerPortal({
               </span>
             </div>
 
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed text-center">
-              Serialized 2D DataMatrix barcode encoded with tamper-evident digital signature.
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 text-center">
+              QR code linked to the batch serial number registered on the blockchain.
             </p>
 
             {createdBatch && (
               <div className="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-2">
                 <div className="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-500/20 text-xs text-blue-900 dark:text-blue-200 flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0" />
-                  <span>Batch minted successfully on-chain!</span>
+                  <span>
+                    {mintOnChain ? 'Batch recorded on Sepolia!' : 'Batch created (off-chain).'}
+                    {mintOnChain && txReceipt?.txHash && (
+                      <a
+                        href={`https://sepolia.etherscan.io/tx/${txReceipt.txHash}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="block underline text-[10px] mt-1"
+                      >
+                        View on Etherscan
+                      </a>
+                    )}
+                  </span>
                 </div>
-
                 <button
                   onClick={() => onSwitchToVerify(createdBatch)}
-                  className="w-full py-2 px-3 rounded-xl bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white font-medium text-xs transition-colors"
+                  className="w-full py-2 px-3 rounded-xl bg-slate-900 dark:bg-slate-800 text-white font-medium text-xs"
                 >
                   Verify Minted Item in Portal
                 </button>
@@ -456,7 +321,6 @@ export default function ManufacturerPortal({
             )}
           </div>
         </div>
-
       </div>
     </div>
   );

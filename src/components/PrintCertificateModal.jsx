@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { X, Printer, ShieldCheck, CheckCircle2, Download, Award, FileText, Lock } from 'lucide-react';
+import { X, Printer, ShieldCheck, CheckCircle2, Download, Award, FileText, Lock, ArrowLeft } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 
 export default function PrintCertificateModal({ isOpen, onClose, batch }) {
@@ -13,6 +13,11 @@ export default function PrintCertificateModal({ isOpen, onClose, batch }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto print:p-0 print:bg-white print:static">
+      <button
+  onClick={onClose}
+  className="fixed top-4 left-4 z-[60] px-4 py-2 rounded-xl bg-white text-slate-900 font-semibold text-xs shadow-lg flex items-center gap-2 print:hidden">
+  <ArrowLeft className="w-4 h-4" /> Back
+</button>
       <div className="relative w-full max-w-4xl bg-white text-slate-900 rounded-2xl shadow-xl overflow-hidden my-8 print:my-0 print:shadow-none print:w-full print:max-w-none print:rounded-none">
         
         {/* Screen Controls Header */}

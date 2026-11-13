@@ -54,11 +54,16 @@ export default function VerificationPortal({
     }
   }, [selectedBatch?.id]);
 
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 2000);
-  };
+ const handleShare = async () => {
+  const link = `${window.location.origin}/?sn=${encodeURIComponent(selectedBatch.serialNumber)}`;
+  try {
+    await navigator.clipboard.writeText(link);
+  } catch {
+    window.prompt('Copy this link:', link);
+  }
+  setCopiedLink(true);
+  setTimeout(() => setCopiedLink(false), 2000);
+};
 
   const getDaysUntilExpiry = (expiryDate) => {
     const diffTime = new Date(expiryDate) - new Date();

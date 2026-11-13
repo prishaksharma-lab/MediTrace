@@ -29,6 +29,19 @@ export default function App() {
   const [web3StatusMsg, setWeb3StatusMsg] = useState('');
 
   // Handle theme change & apply class to document
+  // Open a medicine directly from a shared link / QR code (?sn=...)
+  useEffect(() => {
+    const sn = new URLSearchParams(window.location.search).get('sn');
+    if (sn) {
+      const found = initialBatches.find(b => b.serialNumber === sn);
+      if (found) {
+        setSelectedBatch(found);
+        setActiveTab('verify');
+      }
+    }
+  }, []);
+
+  // Handle theme change & apply class to document
   useEffect(() => {
     localStorage.setItem('meditrace_theme_v2', theme);
     if (theme === 'light') {
